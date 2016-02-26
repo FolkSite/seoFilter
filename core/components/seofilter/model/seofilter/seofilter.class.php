@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The base class for seofilter.
+ * The base class for seoFilter.
  */
-class seofilter {
+class seoFilter {
 	/* @var modX $modx */
 	public $modx;
 

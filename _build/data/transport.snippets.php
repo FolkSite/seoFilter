@@ -3,7 +3,7 @@
 $snippets = array();
 
 $tmp = array(
-	'seofilter' => array(
+	'seoFilter' => array(
 		'file' => 'seofilter',
 		'description' => '',
 	),

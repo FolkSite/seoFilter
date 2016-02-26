@@ -3,7 +3,7 @@
 $plugins = array();
 
 $tmp = array(/*
-	'seofilter' => array(
+	'seoFilter' => array(
 		'file' => 'seofilter',
 		'description' => '',
 		'events' => array(
