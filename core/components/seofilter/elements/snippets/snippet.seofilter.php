@@ -13,17 +13,11 @@ $limit = $modx->getOption('limit', $scriptProperties, 5);
 $outputSeparator = $modx->getOption('outputSeparator', $scriptProperties, "\n");
 $toPlaceholder = $modx->getOption('toPlaceholder', $scriptProperties, false);
 
-// Build query
-$c = $modx->newQuery('seofilterItem');
-$c->sortby($sortby, $sortdir);
-$c->limit($limit);
-$items = $modx->getIterator('seofilterItem', $c);
-
 // Iterate through items
 $list = array();
 /** @var seofilterItem $item */
 foreach ($items as $item) {
-	$list[] = $modx->getChunk($tpl, $item->toArray());
+	//$list[] = $modx->getChunk($tpl, $item->toArray());
 }
 
 // Output

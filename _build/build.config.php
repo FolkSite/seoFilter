@@ -1,7 +1,7 @@
 <?php
 
 /* define package */
-define('PKG_NAME', 'seofilter');
+define('PKG_NAME', 'seoFilter');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
 
 define('PKG_VERSION', '1.0.0');
@@ -52,5 +52,4 @@ $BUILD_RESOLVERS = array(
 	'tables',
 	'chunks',
 	//'setup',
-	'office',
 );
