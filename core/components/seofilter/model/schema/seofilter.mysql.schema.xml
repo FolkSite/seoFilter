@@ -2,4 +2,20 @@
 <model package="seofilter" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="seofilter"
        version="1.1">
 
+    <object class="sfParamPiece" table="sf_param_pieces" extends="xPDOObject">
+        <field key="parameter" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="value" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="alias" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+
+        <index alias="parameter" name="parameter" primary="false" unique="true" type="BTREE">
+            <column key="parameter" length="" collation="A" null="false" />
+        </index>
+        <index alias="value" name="value" primary="false" unique="false" type="BTREE">
+            <column key="value" length="" collation="A" null="false" />
+        </index>
+        <index alias="alias" name="alias" primary="false" unique="false" type="BTREE">
+            <column key="alias" length="" collation="A" null="false" />
+        </index>
+    </object>
+
 </model>
