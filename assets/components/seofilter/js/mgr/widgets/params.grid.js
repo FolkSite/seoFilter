@@ -1,7 +1,7 @@
-seoFilter.grid.Items = function (config) {
+seoFilter.grid.Params = function (config) {
 	config = config || {};
 	if (!config.id) {
-		config.id = 'seofilter-grid-items';
+		config.id = 'seofilter-grid-params';
 	}
 	Ext.applyIf(config, {
 		url: seoFilter.config.connector_url,
@@ -10,12 +10,12 @@ seoFilter.grid.Items = function (config) {
 		tbar: this.getTopBar(config),
 		sm: new Ext.grid.CheckboxSelectionModel(),
 		baseParams: {
-			action: 'mgr/item/getlist'
+			action: 'mgr/param/getlist'
 		},
 		listeners: {
 			rowDblClick: function (grid, rowIndex, e) {
 				var row = grid.store.getAt(rowIndex);
-				this.updateItem(grid, e, row);
+				this.updateParam(grid, e, row);
 			}
 		},
 		viewConfig: {
@@ -25,16 +25,14 @@ seoFilter.grid.Items = function (config) {
 			showPreview: true,
 			scrollOffset: 0,
 			getRowClass: function (rec, ri, p) {
-				return !rec.data.active
-					? 'seofilter-grid-row-disabled'
-					: '';
+				return ''; //!rec.data.active ? 'seofilter-grid-row-disabled' : '';
 			}
 		},
 		paging: true,
 		remoteSort: true,
-		autoHeight: true,
+		autoHeight: true
 	});
-    seoFilter.grid.Items.superclass.constructor.call(this, config);
+    seoFilter.grid.Params.superclass.constructor.call(this, config);
 
 	// Clear selection on grid refresh
 	this.store.on('load', function () {
@@ -43,7 +41,7 @@ seoFilter.grid.Items = function (config) {
 		}
 	}, this);
 };
-Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
+Ext.extend(seoFilter.grid.Params, MODx.grid.Grid, {
 	windows: {},
 
 	getMenu: function (grid, rowIndex) {
@@ -55,9 +53,9 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		this.addContextMenuItem(menu);
 	},
 
-	createItem: function (btn, e) {
+	createParam: function (btn, e) {
 		var w = MODx.load({
-			xtype: 'seofilter-item-window-create',
+			xtype: 'seofilter-param-window-create',
 			id: Ext.id(),
 			listeners: {
 				success: {
@@ -72,7 +70,7 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		w.show(e.target);
 	},
 
-	updateItem: function (btn, e, row) {
+	updateParam: function (btn, e, row) {
 		if (typeof(row) != 'undefined') {
 			this.menu.record = row.data;
 		}
@@ -84,14 +82,14 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		MODx.Ajax.request({
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/get',
+				action: 'mgr/param/get',
 				id: id
 			},
 			listeners: {
 				success: {
 					fn: function (r) {
 						var w = MODx.load({
-							xtype: 'seofilter-item-window-update',
+							xtype: 'seofilter-param-window-update',
 							id: Ext.id(),
 							record: r,
 							listeners: {
@@ -111,22 +109,22 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		});
 	},
 
-	removeItem: function (act, btn, e) {
+	removeParam: function (act, btn, e) {
 		var ids = this._getSelectedIds();
 		if (!ids.length) {
 			return false;
 		}
 		MODx.msg.confirm({
 			title: ids.length > 1
-				? _('seofilter_items_remove')
-				: _('seofilter_item_remove'),
+				? _('seofilter_params_remove')
+				: _('seofilter_param_remove'),
 			text: ids.length > 1
-				? _('seofilter_items_remove_confirm')
-				: _('seofilter_item_remove_confirm'),
+				? _('seofilter_params_remove_confirm')
+				: _('seofilter_param_remove_confirm'),
 			url: this.config.url,
 			params: {
-				action: 'mgr/item/remove',
-				ids: Ext.util.JSON.encode(ids),
+				action: 'mgr/param/remove',
+				ids: Ext.util.JSON.encode(ids)
 			},
 			listeners: {
 				success: {
@@ -139,88 +137,40 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		return true;
 	},
 
-	disableItem: function (act, btn, e) {
-		var ids = this._getSelectedIds();
-		if (!ids.length) {
-			return false;
-		}
-		MODx.Ajax.request({
-			url: this.config.url,
-			params: {
-				action: 'mgr/item/disable',
-				ids: Ext.util.JSON.encode(ids),
-			},
-			listeners: {
-				success: {
-					fn: function () {
-						this.refresh();
-					}, scope: this
-				}
-			}
-		})
-	},
-
-	enableItem: function (act, btn, e) {
-		var ids = this._getSelectedIds();
-		if (!ids.length) {
-			return false;
-		}
-		MODx.Ajax.request({
-			url: this.config.url,
-			params: {
-				action: 'mgr/item/enable',
-				ids: Ext.util.JSON.encode(ids),
-			},
-			listeners: {
-				success: {
-					fn: function () {
-						this.refresh();
-					}, scope: this
-				}
-			}
-		})
-	},
-
 	getFields: function (config) {
-		return ['id', 'name', 'description', 'active', 'actions'];
+		return ['id', 'name', 'type', 'actions'];
 	},
 
 	getColumns: function (config) {
 		return [{
-			header: _('seofilter_item_id'),
+			header: _('seofilter_param_id'),
 			dataIndex: 'id',
 			sortable: true,
-			width: 70
+			width: 50
 		}, {
-			header: _('seofilter_item_name'),
+			header: _('seofilter_param_name'),
 			dataIndex: 'name',
 			sortable: true,
 			width: 200
 		}, {
-			header: _('seofilter_item_description'),
-			dataIndex: 'description',
-			sortable: false,
-			width: 250
-		}, {
-			header: _('seofilter_item_active'),
-			dataIndex: 'active',
-			renderer: seoFilter.utils.renderBoolean,
-			sortable: true,
-			width: 100
-		}, {
+            header: _('seofilter_param_type'),
+            dataIndex: 'type',
+            sortable: true,
+            width: 100
+        }, {
 			header: _('seofilter_grid_actions'),
 			dataIndex: 'actions',
 			renderer: seoFilter.utils.renderActions,
 			sortable: false,
-			width: 100,
+			width: 80,
 			id: 'actions'
 		}];
 	},
 
 	getTopBar: function (config) {
 		return [{
-			text: '<i class="icon icon-plus"></i>&nbsp;' + _('seofilter_item_create'),
-			handler: this.createItem,
+			text: '<i class="icon icon-plus"></i>&nbsp;' + _('seofilter_param_create'),
+			handler: this.createParam,
 			scope: this
 		}, '->', {
 			xtype: 'textfield',
@@ -293,4 +243,4 @@ Ext.extend(seoFilter.grid.Items, MODx.grid.Grid, {
 		this.refresh();
 	}
 });
-Ext.reg('seofilter-grid-items', seoFilter.grid.Items);
+Ext.reg('seofilter-grid-params', seoFilter.grid.Params);

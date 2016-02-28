@@ -1,10 +1,10 @@
-var seofilter = function (config) {
+var seoFilter = function (config) {
 	config = config || {};
-	seofilter.superclass.constructor.call(this, config);
+    seoFilter.superclass.constructor.call(this, config);
 };
-Ext.extend(seofilter, Ext.Component, {
+Ext.extend(seoFilter, Ext.Component, {
 	page: {}, window: {}, grid: {}, tree: {}, panel: {}, combo: {}, config: {}, view: {}, utils: {}
 });
-Ext.reg('seofilter', seofilter);
+Ext.reg('seoFilter', seoFilter);
 
-seofilter = new seofilter();
+seoFilter = new seoFilter();

@@ -20,8 +20,8 @@ abstract class seofilterMainController extends modExtraManagerController {
 		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/seofilter.js');
 		$this->addHtml('
 		<script type="text/javascript">
-			seofilter.config = ' . $this->modx->toJSON($this->seofilter->config) . ';
-			seofilter.config.connector_url = "' . $this->seofilter->config['connectorUrl'] . '";
+			seoFilter.config = ' . $this->modx->toJSON($this->seofilter->config) . ';
+			seoFilter.config.connector_url = "' . $this->seofilter->config['connectorUrl'] . '";
 		</script>
 		');
 

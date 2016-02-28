@@ -1,4 +1,4 @@
-seofilter.window.CreateItem = function (config) {
+seoFilter.window.CreateItem = function (config) {
 	config = config || {};
 	if (!config.id) {
 		config.id = 'seofilter-item-window-create';
@@ -7,7 +7,7 @@ seofilter.window.CreateItem = function (config) {
 		title: _('seofilter_item_create'),
 		width: 550,
 		autoHeight: true,
-		url: seofilter.config.connector_url,
+		url: seoFilter.config.connector_url,
 		action: 'mgr/item/create',
 		fields: this.getFields(config),
 		keys: [{
@@ -16,9 +16,9 @@ seofilter.window.CreateItem = function (config) {
 			}, scope: this
 		}]
 	});
-	seofilter.window.CreateItem.superclass.constructor.call(this, config);
+    seoFilter.window.CreateItem.superclass.constructor.call(this, config);
 };
-Ext.extend(seofilter.window.CreateItem, MODx.Window, {
+Ext.extend(seoFilter.window.CreateItem, MODx.Window, {
 
 	getFields: function (config) {
 		return [{
@@ -27,7 +27,7 @@ Ext.extend(seofilter.window.CreateItem, MODx.Window, {
 			name: 'name',
 			id: config.id + '-name',
 			anchor: '99%',
-			allowBlank: false,
+			allowBlank: false
 		}, {
 			xtype: 'textarea',
 			fieldLabel: _('seofilter_item_description'),
@@ -40,7 +40,7 @@ Ext.extend(seofilter.window.CreateItem, MODx.Window, {
 			boxLabel: _('seofilter_item_active'),
 			name: 'active',
 			id: config.id + '-active',
-			checked: true,
+			checked: true
 		}];
 	},
 
@@ -48,10 +48,10 @@ Ext.extend(seofilter.window.CreateItem, MODx.Window, {
 	}
 
 });
-Ext.reg('seofilter-item-window-create', seofilter.window.CreateItem);
+Ext.reg('seofilter-item-window-create', seoFilter.window.CreateItem);
 
 
-seofilter.window.UpdateItem = function (config) {
+seoFilter.window.UpdateItem = function (config) {
 	config = config || {};
 	if (!config.id) {
 		config.id = 'seofilter-item-window-update';
@@ -60,7 +60,7 @@ seofilter.window.UpdateItem = function (config) {
 		title: _('seofilter_item_update'),
 		width: 550,
 		autoHeight: true,
-		url: seofilter.config.connector_url,
+		url: seoFilter.config.connector_url,
 		action: 'mgr/item/update',
 		fields: this.getFields(config),
 		keys: [{
@@ -69,34 +69,34 @@ seofilter.window.UpdateItem = function (config) {
 			}, scope: this
 		}]
 	});
-	seofilter.window.UpdateItem.superclass.constructor.call(this, config);
+    seoFilter.window.UpdateItem.superclass.constructor.call(this, config);
 };
-Ext.extend(seofilter.window.UpdateItem, MODx.Window, {
+Ext.extend(seoFilter.window.UpdateItem, MODx.Window, {
 
 	getFields: function (config) {
 		return [{
 			xtype: 'hidden',
 			name: 'id',
-			id: config.id + '-id',
+			id: config.id + '-id'
 		}, {
 			xtype: 'textfield',
 			fieldLabel: _('seofilter_item_name'),
 			name: 'name',
 			id: config.id + '-name',
 			anchor: '99%',
-			allowBlank: false,
+			allowBlank: false
 		}, {
 			xtype: 'textarea',
 			fieldLabel: _('seofilter_item_description'),
 			name: 'description',
 			id: config.id + '-description',
 			anchor: '99%',
-			height: 150,
+			height: 150
 		}, {
 			xtype: 'xcheckbox',
 			boxLabel: _('seofilter_item_active'),
 			name: 'active',
-			id: config.id + '-active',
+			id: config.id + '-active'
 		}];
 	},
 
@@ -104,4 +104,4 @@ Ext.extend(seofilter.window.UpdateItem, MODx.Window, {
 	}
 
 });
-Ext.reg('seofilter-item-window-update', seofilter.window.UpdateItem);
+Ext.reg('seofilter-item-window-update', seoFilter.window.UpdateItem);

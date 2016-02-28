@@ -1,10 +1,10 @@
-seofilter.utils.renderBoolean = function (value, props, row) {
+seoFilter.utils.renderBoolean = function (value, props, row) {
 	return value
 		? String.format('<span class="green">{0}</span>', _('yes'))
 		: String.format('<span class="red">{0}</span>', _('no'));
 };
 
-seofilter.utils.getMenu = function (actions, grid, selected) {
+seoFilter.utils.getMenu = function (actions, grid, selected) {
 	var menu = [];
 	var cls, icon, title, action = '';
 
@@ -51,7 +51,7 @@ seofilter.utils.getMenu = function (actions, grid, selected) {
 };
 
 
-seofilter.utils.renderActions = function (value, props, row) {
+seoFilter.utils.renderActions = function (value, props, row) {
 	var res = [];
 	var cls, icon, title, action, item = '';
 	for (var i in row.data.actions) {

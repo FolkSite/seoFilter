@@ -31,8 +31,11 @@ class seofilterHomeManagerController extends seofilterMainController {
 		$this->addCss($this->seofilter->config['cssUrl'] . 'mgr/main.css');
 		$this->addCss($this->seofilter->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
 		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/misc/utils.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/items.grid.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/items.windows.js');
+        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/misc/combos.js');
+		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/params.grid.js');
+		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/params.windows.js');
+        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/pieces.grid.js');
+        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/pieces.windows.js');
 		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/home.panel.js');
 		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/sections/home.js');
 		$this->addHtml('<script type="text/javascript">
