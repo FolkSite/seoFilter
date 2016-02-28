@@ -3,10 +3,10 @@
 $snippets = array();
 
 $tmp = array(
-	'seoFilter' => array(
+	/*'seoFilter' => array(
 		'file' => 'seofilter',
 		'description' => '',
-	),
+	),*/
 );
 
 foreach ($tmp as $k => $v) {

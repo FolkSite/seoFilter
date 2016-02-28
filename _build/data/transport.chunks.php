@@ -3,10 +3,10 @@
 $chunks = array();
 
 $tmp = array(
-	'tpl.seofilter.item' => array(
+	/*'tpl.seofilter.item' => array(
 		'file' => 'item',
 		'description' => '',
-	),
+	),*/
 );
 
 // Save chunks for setup options

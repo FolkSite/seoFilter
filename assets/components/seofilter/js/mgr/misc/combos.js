@@ -6,6 +6,7 @@ seoFilter.combo.ParamType = function(config) {
             fields: ['code', 'display'],
             data: [
                 ['field', _('seofilter_param_type_field')],
+                ['field_json', _('seofilter_param_type_field_json')],
                 ['vendor', _('seofilter_param_type_vendor')]
             ]
         }),

@@ -177,7 +177,19 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 			text: '<i class="icon icon-plus"></i>&nbsp;' + _('seofilter_piece_create'),
 			handler: this.createPiece,
 			scope: this
-		}, '->', {
+		}, '->',{
+            xtype: 'seofilter-combo-param',
+            name: 'filter',
+            width: 200,
+            id: config.id + '-filter-field',
+            emptyText: _('seofilter_grid_filter'),
+            listeners: {
+                select: {
+                    fn: function (tf) { this._doFilter(tf); },
+                    scope: this
+                }
+            }
+        }, {
 			xtype: 'textfield',
 			name: 'query',
 			width: 200,
@@ -235,6 +247,11 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 		return ids;
 	},
 
+    _doFilter: function (tf, nv, ov) {
+        this.getStore().baseParams.filter = tf.getValue();
+        this.getBottomToolbar().changePage(1);
+        this.refresh();
+    },
 	_doSearch: function (tf, nv, ov) {
 		this.getStore().baseParams.query = tf.getValue();
 		this.getBottomToolbar().changePage(1);
@@ -242,8 +259,10 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 	},
 
 	_clearSearch: function (btn, e) {
-		this.getStore().baseParams.query = '';
-		Ext.getCmp(this.config.id + '-search-field').setValue('');
+		this.getStore().baseParams.filter = '';
+        this.getStore().baseParams.query = '';
+		Ext.getCmp(this.config.id + '-filter-field').setValue('');
+        Ext.getCmp(this.config.id + '-search-field').setValue('');
 		this.getBottomToolbar().changePage(1);
 		this.refresh();
 	}

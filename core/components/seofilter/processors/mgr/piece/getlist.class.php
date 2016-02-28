@@ -36,6 +36,13 @@ class seoFilterPieceGetListProcessor extends modObjectGetListProcessor {
         $c->select($this->modx->getSelectColumns($this->classKey, $this->classKey, ''));
         $c->select('`Param`.`name` as `param_name`');
 
+        $filter = trim($this->getProperty('filter'));
+        if ($filter) {
+            $c->where(array(
+                'param' => $filter
+            ));
+        }
+
 		$query = trim($this->getProperty('query'));
 		if ($query) {
 			$c->where(array(
