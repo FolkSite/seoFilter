@@ -7,8 +7,7 @@ class piecesMap {
 /* @var modX $modx */
     public $modx;
 
-    private $paramsMap = array();
-    private $piecesMap = array();
+    private $map = array();
     private $mapsLoaded = false;
 
     function __construct(modX &$modx) {
@@ -24,7 +23,7 @@ class piecesMap {
             $rows = $q->stmt->fetchAll(PDO::FETCH_ASSOC);
 
             foreach($rows as $row) {
-                $this->paramsMap[$row['name']] = array(
+                $this->map[$row['name']] = array(
                     'id' => $row['id'],
                     'pieces' => array(),
                 );
@@ -40,12 +39,14 @@ class piecesMap {
 
             foreach($rows as $row) {
                 if(!empty($row['alias'])) {
-                    $this->piecesMap[$row['value']] = array(
+                    $this->map[$paramId2Name[$row['param']]]['pieces'][$row['alias']] = array(
                         'id' => $row['id'],
                         'param_id' => $row['param'],
                         'param' => $paramId2Name[$row['param']],
+                        'value' => $row['value'],
                         'alias' => $row['alias'],
                         'correction' => $row['correction'],
+                        'title' => !empty($row['correction']) ? $row['correction'] : $row['value'],
                     );
                 }
             }
@@ -59,8 +60,13 @@ class piecesMap {
             $this->loadMap();
         }
 
-        if(array_key_exists($value, $this->piecesMap) && $this->piecesMap[$value]['param'] == $param) {
-            return $this->piecesMap[$value]['alias'];
+        if(array_key_exists($param, $this->map)) {
+            foreach($this->map[$param]['pieces'] as $piece){
+                if($piece['value'] == $value ) {
+                    return $piece['alias'];
+                }
+            }
+
         }
         return '';
     }
@@ -74,15 +80,9 @@ class piecesMap {
             $this->loadMap();
         }
 
-
-        foreach($this->piecesMap as $pieceValue => $pieceData) {
-            if($pieceData['alias'] == $alias) {
-
-                return array(
-                    'param' => $pieceData['param'],
-                    'value' => $pieceValue,
-                    'title' => !empty($pieceData['correction']) ? $pieceData['correction'] : $pieceValue,
-                );
+        foreach($this->map as $param => $paramData) {
+            if(array_key_exists($alias, $paramData['pieces'])) {
+                return $paramData['pieces'][$alias];
             }
         }
 
