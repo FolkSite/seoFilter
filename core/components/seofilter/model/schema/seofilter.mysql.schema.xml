@@ -13,6 +13,7 @@
         <field key="param" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="value" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="alias" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="correction" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
 
         <index alias="param" name="param" primary="false" unique="false" type="BTREE">
             <column key="param" length="" collation="A" null="false" />
@@ -27,5 +28,5 @@
         <aggregate alias="Param" class="sfParam" local="param" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
-
+    
 </model>

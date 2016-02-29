@@ -142,12 +142,12 @@ Ext.extend(seoFilter.grid.Params, MODx.grid.Grid, {
 	},
 
 	getColumns: function (config) {
-		return [{
+		return [/*{
 			header: _('seofilter_param_id'),
 			dataIndex: 'id',
 			sortable: true,
 			width: 50
-		}, {
+		},*/ {
 			header: _('seofilter_param_name'),
 			dataIndex: 'name',
 			sortable: true,

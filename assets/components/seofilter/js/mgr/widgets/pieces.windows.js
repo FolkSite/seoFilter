@@ -43,6 +43,13 @@ Ext.extend(seoFilter.window.CreatePiece, MODx.Window, {
             id: config.id + '-alias',
             anchor: '99%',
             allowBlank: true
+        },{
+            xtype: 'textfield',
+            fieldLabel: _('seofilter_piece_correction'),
+            name: 'correction',
+            id: config.id + '-correction',
+            anchor: '99%',
+            allowBlank: true
         }];
 	},
 
@@ -100,6 +107,13 @@ Ext.extend(seoFilter.window.UpdatePiece, MODx.Window, {
             fieldLabel: _('seofilter_piece_alias'),
             name: 'alias',
             id: config.id + '-alias',
+            anchor: '99%',
+            allowBlank: true
+        },{
+            xtype: 'textfield',
+            fieldLabel: _('seofilter_piece_correction'),
+            name: 'correction',
+            id: config.id + '-correction',
             anchor: '99%',
             allowBlank: true
         }];

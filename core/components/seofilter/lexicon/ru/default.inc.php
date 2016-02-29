@@ -41,6 +41,7 @@ $_lang['seofilter_piece_id'] = 'Id';
 $_lang['seofilter_piece_param'] = 'Параметр';
 $_lang['seofilter_piece_value'] = 'Значение';
 $_lang['seofilter_piece_alias'] = 'Алиас';
+$_lang['seofilter_piece_correction'] = 'Уточнение значения';
 
 $_lang['seofilter_piece_create'] = 'Добавить Значение';
 $_lang['seofilter_piece_update'] = 'Изменить Значение';

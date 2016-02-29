@@ -65,8 +65,13 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 				}
 			}
 		});
-		w.reset();
-		w.setValues({active: true});
+        var defaultValues = { };
+        var gridParamFilter = this.getStore().baseParams.filter;
+        if(typeof gridParamFilter != 'undefined') {
+            defaultValues.param = gridParamFilter;
+        }
+        w.reset();
+		w.setValues(defaultValues);
 		w.show(e.target);
 	},
 
@@ -138,16 +143,16 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 	},
 
 	getFields: function (config) {
-		return ['id', 'param_name', 'value', 'alias', 'actions'];
+		return ['id', 'param_name', 'value', 'alias', 'correction', 'actions'];
 	},
 
 	getColumns: function (config) {
-		return [{
+		return [/*{
 			header: _('seofilter_piece_id'),
 			dataIndex: 'id',
 			sortable: true,
 			width: 50
-		}, {
+		},*/ {
 			header: _('seofilter_piece_param'),
 			dataIndex: 'param_name',
 			sortable: true,
@@ -160,6 +165,11 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
         }, {
             header: _('seofilter_piece_alias'),
             dataIndex: 'alias',
+            sortable: true,
+            width: 150
+        }, {
+            header: _('seofilter_piece_correction'),
+            dataIndex: 'correction',
             sortable: true,
             width: 150
         }, {
