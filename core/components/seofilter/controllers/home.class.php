@@ -4,9 +4,9 @@
  * The home manager controller for seofilter.
  *
  */
-class seofilterHomeManagerController extends seofilterMainController {
-	/* @var seofilter $seofilter */
-	public $seofilter;
+class seoFilterHomeManagerController extends seoFilterMainController {
+	/* @var seoFilter $seoFilter */
+	public $seoFilter;
 
 
 	/**
@@ -28,16 +28,16 @@ class seofilterHomeManagerController extends seofilterMainController {
 	 * @return void
 	 */
 	public function loadCustomCssJs() {
-		$this->addCss($this->seofilter->config['cssUrl'] . 'mgr/main.css');
-		$this->addCss($this->seofilter->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/misc/utils.js');
-        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/misc/combos.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/params.grid.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/params.windows.js');
-        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/pieces.grid.js');
-        $this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/pieces.windows.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/widgets/home.panel.js');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/sections/home.js');
+		$this->addCss($this->seoFilter->config['cssUrl'] . 'mgr/main.css');
+		$this->addCss($this->seoFilter->config['cssUrl'] . 'mgr/bootstrap.buttons.css');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/misc/utils.js');
+        $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/misc/combos.js');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/params.grid.js');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/params.windows.js');
+        $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/pieces.grid.js');
+        $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/pieces.windows.js');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/home.panel.js');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/sections/home.js');
 		$this->addHtml('<script type="text/javascript">
 		Ext.onReady(function() {
 			MODx.load({ xtype: "seofilter-page-home"});
@@ -50,6 +50,6 @@ class seofilterHomeManagerController extends seofilterMainController {
 	 * @return string
 	 */
 	public function getTemplateFile() {
-		return $this->seofilter->config['templatesPath'] . 'home.tpl';
+		return $this->seoFilter->config['templatesPath'] . 'home.tpl';
 	}
 }

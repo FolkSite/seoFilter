@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class seofilterMainController
+ * Class seoFilterMainController
  */
-abstract class seofilterMainController extends modExtraManagerController {
-	/** @var seofilter $seofilter */
-	public $seofilter;
+abstract class seoFilterMainController extends modExtraManagerController {
+	/** @var seoFilter $seoFilter */
+	public $seoFilter;
 
 
 	/**
@@ -15,13 +15,13 @@ abstract class seofilterMainController extends modExtraManagerController {
 		$corePath = $this->modx->getOption('seofilter_core_path', null, $this->modx->getOption('core_path') . 'components/seofilter/');
 		require_once $corePath . 'model/seofilter/seofilter.class.php';
 
-		$this->seofilter = new seofilter($this->modx);
-		//$this->addCss($this->seofilter->config['cssUrl'] . 'mgr/main.css');
-		$this->addJavascript($this->seofilter->config['jsUrl'] . 'mgr/seofilter.js');
+		$this->seoFilter = new seoFilter($this->modx);
+		//$this->addCss($this->seoFilter->config['cssUrl'] . 'mgr/main.css');
+		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/seofilter.js');
 		$this->addHtml('
 		<script type="text/javascript">
-			seoFilter.config = ' . $this->modx->toJSON($this->seofilter->config) . ';
-			seoFilter.config.connector_url = "' . $this->seofilter->config['connectorUrl'] . '";
+			seoFilter.config = ' . $this->modx->toJSON($this->seoFilter->config) . ';
+			seoFilter.config.connector_url = "' . $this->seoFilter->config['connectorUrl'] . '";
 		</script>
 		');
 
@@ -49,7 +49,7 @@ abstract class seofilterMainController extends modExtraManagerController {
 /**
  * Class IndexManagerController
  */
-class IndexManagerController extends seofilterMainController {
+class IndexManagerController extends seoFilterMainController {
 
 	/**
 	 * @return string

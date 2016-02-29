@@ -3,10 +3,10 @@
 $snippets = array();
 
 $tmp = array(
-	/*'seoFilter' => array(
-		'file' => 'seofilter',
+	'sfGetAlias' => array(
+		'file' => 'sf_get_alias',
 		'description' => '',
-	),*/
+	),
 );
 
 foreach ($tmp as $k => $v) {

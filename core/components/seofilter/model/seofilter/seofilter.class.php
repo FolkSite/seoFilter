@@ -1,11 +1,15 @@
 <?php
 
+require_once (dirname(__FILE__) . '/piecesmap.class.php');
+
 /**
  * The base class for seoFilter.
  */
 class seoFilter {
 	/* @var modX $modx */
 	public $modx;
+
+    private $piecesMap;
 
 
 	/**
@@ -14,6 +18,8 @@ class seoFilter {
 	 */
 	function __construct(modX &$modx, array $config = array()) {
 		$this->modx =& $modx;
+
+        $this->piecesMap = new piecesMap($modx);
 
 		$corePath = $this->modx->getOption('seofilter_core_path', $config, $this->modx->getOption('core_path') . 'components/seofilter/');
 		$assetsUrl = $this->modx->getOption('seofilter_assets_url', $config, $this->modx->getOption('assets_url') . 'components/seofilter/');
@@ -38,5 +44,14 @@ class seoFilter {
 		$this->modx->addPackage('seofilter', $this->config['modelPath']);
 		$this->modx->lexicon->load('seofilter:default');
 	}
+
+
+    public function getParamValueAlias($param, $value) {
+        return $this->piecesMap->getAlias($param, $value);
+    }
+
+    public function getParamValueByAlias($alias){
+        return $this->piecesMap->getPieceData($alias);
+    }
 
 }
