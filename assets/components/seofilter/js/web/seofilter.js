@@ -1,7 +1,8 @@
 seoFilterConfig = {
-    depth: 2,
+    max_depth: 2,
     slash_at_end: true,
-    ignored: ['price']
+    ignored: ['price'],
+    actionUrl: '/_seoFilter/assets/components/seofilter/action.php'
 };
 // Set slider numbers
 $(".filter-number").each(function() {
@@ -55,7 +56,7 @@ mSearch2.Hash.set = function(vars) {
         }
     }
 
-    if(vars_count <= seoFilterConfig.depth && vars_count == vars_alias_count) {
+    if(vars_count <= seoFilterConfig.max_depth && vars_count == vars_alias_count) {
         hash = hash_seo_alias.join('') + (hash_seo_get.length == 0 ? '' : '?' + hash_seo_get.join('&'));
     }
     else {
@@ -72,3 +73,47 @@ mSearch2.Hash.set = function(vars) {
         window.location.hash = hash;
     }
 };
+
+
+mSearch2.afterLoad = function() {
+
+    // custom
+    seoFilterUpdateCategoryMeta();
+
+    // default mSearch behavior
+    this.results.css('opacity', 1);
+    this.filters.find('.' + this.options.disabled_class).prop('disabled', false).removeClass(this.options.disabled_class);
+};
+
+function seoFilterUpdateCategoryMeta() {
+    var pageId = $(mSearch2.options.wrapper).data('page');
+    if (pageId !== undefined) {
+        //var brand = $("input[name='brand']:checked").length == 1 ? $("input[name='brand']:checked").attr('value') : 'default-content-return';
+        $.ajax({
+            type: "POST",
+            url: seoFilterConfig.actionUrl,
+            dataType: "json",
+            data: {
+                action: 'category/get_meta',
+                page: pageId,
+                uri: window.location.pathname
+            },
+            cache: false,
+            success: function(data) {
+                if(data.success) {
+                    $('title').text(data.data.title);
+                    $('h1').html(data.data.h1);
+                }
+
+                //$('meta[name="keywords"]').attr("content", data.meta_keywords);
+                //$('meta[name="description"]').attr("content", data.meta_description);
+                //$('.crumbs-container').html(data.crumbs);
+
+                //$('.resource-text-content').html(data.text);
+            },
+            error: function(){
+                alert('seoFilter update meta error.');
+            }
+        });
+    }
+}

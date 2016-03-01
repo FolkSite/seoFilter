@@ -23,6 +23,7 @@ class seoFilter {
 
 		$corePath = $this->modx->getOption('seofilter_core_path', $config, $this->modx->getOption('core_path') . 'components/seofilter/');
 		$assetsUrl = $this->modx->getOption('seofilter_assets_url', $config, $this->modx->getOption('assets_url') . 'components/seofilter/');
+
 		$connectorUrl = $assetsUrl . 'connector.php';
 
 		$this->config = array_merge(array(
@@ -38,13 +39,85 @@ class seoFilter {
 			'templatesPath' => $corePath . 'elements/templates/',
 			'chunkSuffix' => '.chunk.tpl',
 			'snippetsPath' => $corePath . 'elements/snippets/',
-			'processorsPath' => $corePath . 'processors/'
+			'processorsPath' => $corePath . 'processors/',
+
+            'json_response' => true,
 		), $config);
 
 		$this->modx->addPackage('seofilter', $this->config['modelPath']);
 		$this->modx->lexicon->load('seofilter:default');
 	}
 
+    public function processUri($uri = '') {
+        if(empty($uri)) {
+            $request_param_alias = $this->modx->context->getOption('request_param_alias', 'q');
+            if (!isset($_REQUEST[$request_param_alias])) {
+                return false;
+            }
+            $uri = $_REQUEST[$request_param_alias];
+        }
+
+        $max_depth = $this->modx->getOption('seofilter_max_depth', 1);
+
+        $container_suffix = $this->modx->context->getOption('container_suffix', '');
+        $request = $page = trim($uri, "/");
+        $pieces = explode('/', $request);
+
+        for ($i = count($pieces); $i > 0; $i--) {
+            // Определяем id раздела.
+            if ($section = $this->modx->findResource($page.$container_suffix)) {
+                break;
+            }
+            $page = trim(str_replace($pieces[$i-1], '', $page), "/");
+        }
+
+        if (!$section) {
+            return false;
+        }
+
+        $pieces = explode('/', trim(str_replace($page, '', $request), '/'));
+
+        if(count($pieces) > $max_depth) {
+            return false;
+        }
+
+        $check = false; // Обнуляем проверку
+        $filter_title = array();
+        foreach ($pieces as $piece) {
+            if (empty($piece)){
+                return false;
+            }
+
+            $pieceData = $this->getParamValueByAlias($piece);
+            if(!$pieceData) {
+                return false;
+            }
+            $param = $pieceData['param'];
+            $value = $pieceData['value'];
+            $title = $pieceData['title'];
+
+            // устанавливаем плейсхолдер
+            $this->modx->setPlaceHolder('seo_filter_'.$param, $title);
+            $filter_title[] = $title;
+
+            // Осталось выставить нужные переменные в запрос, как будто юзер их сам указал
+            $_GET[$param] = $value;
+            $_POST[$param] = $value;
+            $_REQUEST[$param] = $value;
+
+            $check = true;
+        }
+
+        $this->modx->setPlaceHolder('seo_filter_title', implode(" ", $filter_title));
+
+        // Есть ли параметры
+        if ($check) {
+            // А теперь подсовывем юзеру страницу, а дальше сниппет на ней сам разберётся
+            return $section;
+        }
+
+        return false;
+    }
 
     public function getParamValueAlias($param, $value) {
         return $this->piecesMap->getAlias($param, $value);
@@ -52,6 +125,69 @@ class seoFilter {
 
     public function getParamValueByAlias($alias){
         return $this->piecesMap->getPieceData($alias);
+    }
+
+    public function getCategoryMeta($data = array()){
+        // пытаемся получить категорию, считая что к ее uri добавлен алиас фильтра
+        $categoryId = $this->processUri($data['uri']);
+        $category = null;
+        if(!$categoryId || !$category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0))) {
+            // а нет такой категории с фильтром, тогда берем просто текущую категорию
+            if(!isset($data['page']) || !$category = $this->modx->getObject('msCategory', array('id' => intval($data['page']), 'published' => 1, 'deleted' => 0))) {
+                return $this->error($this->modx->lexicon('seofilter_request_error'));
+            }
+        }
+
+        $this->modx->runSnippet('seoTags', array('resource' => $category->get('id')));
+
+        $result = array();
+        $result['h1'] = $this->modx->runSnippet('pageTitle', array('resource' => $category->get('id')));
+        $result['title'] = $this->modx->getPlaceholder('seoTitle');
+        $result['keywords'] = $this->modx->getPlaceholder('seoKeywords');
+        $result['description'] = $this->modx->getPlaceholder('seoDescription');
+
+        return $this->success('', $result);
+    }
+
+
+    /**
+     * This method returns an success of the action
+     *
+     * @param string $message A lexicon key for success message
+     * @param array $data.Additional data, for example cart status
+     * @param array $placeholders Array with placeholders for lexicon entry
+     *
+     * @return array|string $response
+     * */
+    public function success($message = '', $data = array(), $placeholders = array()) {
+        $response = array(
+            'success' => true
+            ,'message' => $this->modx->lexicon($message, $placeholders)
+            ,'data' => $data
+        );
+        return $this->config['json_response']
+            ? $this->modx->toJSON($response)
+            : $response;
+    }
+
+    /**
+     * This method returns an error of the cart
+     *
+     * @param string $message A lexicon key for error message
+     * @param array $data.Additional data, for example cart status
+     * @param array $placeholders Array with placeholders for lexicon entry
+     *
+     * @return array|string $response
+     */
+    public function error($message = '', $data = array(), $placeholders = array()) {
+        $response = array(
+            'success' => false
+            ,'message' => $this->modx->lexicon($message, $placeholders)
+            ,'data' => $data
+        );
+        return $this->config['json_response']
+            ? $this->modx->toJSON($response)
+            : $response;
     }
 
 }

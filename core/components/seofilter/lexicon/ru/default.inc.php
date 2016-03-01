@@ -5,6 +5,9 @@ include_once 'setting.inc.php';
 $_lang['seofilter'] = 'Управление сео фильтром';
 $_lang['seofilter_menu_desc'] = 'Управление параметрами фильтра.';
 $_lang['seofilter_intro_msg'] = 'Вы можете выделять сразу несколько строк при помощи Shift или Ctrl.';
+$_lang['seofilter_unknown_action'] = 'Неизвестное действие';
+$_lang['seofilter_request_error'] = 'Ошибка запроса';
+
 
 # common
 $_lang['seofilter_err_empty'] = 'Вы должны заполнить поле.';

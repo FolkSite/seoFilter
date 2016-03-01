@@ -1,5 +1,9 @@
 Changelog for seofilter.
 
+1.0.3-beta
+==============
+ - Активная разработка
+
 1.0.0-beta
 ==============
 - Opimized for MODX 2.3

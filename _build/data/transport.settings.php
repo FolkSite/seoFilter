@@ -2,13 +2,12 @@
 
 $settings = array();
 
-$tmp = array(/*
-	'some_setting' => array(
-		'xtype' => 'combo-boolean',
-		'value' => true,
+$tmp = array(
+	'max_depth' => array(
+		'xtype' => 'numberfield',
+		'value' => 2,
 		'area' => 'seofilter_main',
 	),
-	*/
 );
 
 foreach ($tmp as $k => $v) {
