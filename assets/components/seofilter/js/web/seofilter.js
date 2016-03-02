@@ -1,9 +1,10 @@
 seoFilterConfig = {
     max_depth: 2,
     slash_at_end: true,
-    ignored: ['price'],
+    ignored: ['price', 'page', 'limit', 'tpl'],
     actionUrl: '/_seoFilter/assets/components/seofilter/action.php'
 };
+
 // Set slider numbers
 $(".filter-number").each(function() {
     var filter = $(".mse2_number_slider", this).data('number-filter'),
