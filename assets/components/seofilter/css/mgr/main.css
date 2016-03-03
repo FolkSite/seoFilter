@@ -67,3 +67,8 @@ a.x-menu-item .x-menu-item-text .icon {
 ul.seofilter-row-actions .actions-menu {width: 40px;}
 ul.seofilter-row-actions .actions-menu:after {content: " \f107";}
 */
+
+.seofilter-category-list-item .parents,
+.seofilter-product-list-item .parents {
+    display:block;
+}

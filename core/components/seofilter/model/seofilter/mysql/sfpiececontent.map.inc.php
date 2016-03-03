@@ -1,19 +1,23 @@
 <?php
-$xpdo_meta_map['sfPiece']= array (
+$xpdo_meta_map['sfPieceContent']= array (
   'package' => 'seofilter',
   'version' => '1.1',
-  'table' => 'sf_param_pieces',
+  'table' => 'sf_pieces_content',
   'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
-    'param' => 0,
-    'value' => '',
+    'resource_id' => 0,
     'alias' => '',
-    'correction' => '',
+    'pagetitle' => '',
+    'title' => '',
+    'keywords' => '',
+    'description' => '',
+    'text1' => '',
+    'text2' => '',
   ),
   'fieldMeta' => 
   array (
-    'param' => 
+    'resource_id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -21,14 +25,6 @@ $xpdo_meta_map['sfPiece']= array (
       'attributes' => 'unsigned',
       'null' => false,
       'default' => 0,
-    ),
-    'value' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
     ),
     'alias' => 
     array (
@@ -38,10 +34,48 @@ $xpdo_meta_map['sfPiece']= array (
       'null' => false,
       'default' => '',
     ),
-    'correction' => 
+    'pagetitle' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '255',
+      'precision' => '1024',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'title' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '1024',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'keywords' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '1024',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'description' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '1024',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'text1' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'text2' => 
+    array (
+      'dbtype' => 'text',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
@@ -49,31 +83,15 @@ $xpdo_meta_map['sfPiece']= array (
   ),
   'indexes' => 
   array (
-    'param' => 
+    'resource_id' => 
     array (
-      'alias' => 'param',
+      'alias' => 'resource_id',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
       'columns' => 
       array (
-        'param' => 
-        array (
-          'length' => '',
-          'collation' => 'A',
-          'null' => false,
-        ),
-      ),
-    ),
-    'value' => 
-    array (
-      'alias' => 'value',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'value' => 
+        'resource_id' => 
         array (
           'length' => '',
           'collation' => 'A',
@@ -100,10 +118,10 @@ $xpdo_meta_map['sfPiece']= array (
   ),
   'aggregates' => 
   array (
-    'Param' => 
+    'Resource' => 
     array (
-      'class' => 'sfParam',
-      'local' => 'param',
+      'class' => 'modResource',
+      'local' => 'resource_id',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',

@@ -5,5 +5,6 @@ $xpdo_meta_map = array (
   array (
     0 => 'sfParam',
     1 => 'sfPiece',
+    2 => 'sfPieceContent',
   ),
 );

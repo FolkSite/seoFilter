@@ -39,6 +39,16 @@ seoFilter.panel.Home = function (config) {
                     xtype: 'seofilter-grid-pieces',
                     cls: 'main-wrapper'
                 }]
+            }, {
+                title: _('seofilter_pieces_content'),
+                layout: 'anchor',
+                items: [{
+                    html: _('seofilter_intro_msg'),
+                    cls: 'panel-desc'
+                }, {
+                    xtype: 'seofilter-grid-pieces-content',
+                    cls: 'main-wrapper'
+                }]
             }]
 		}]
 	});
