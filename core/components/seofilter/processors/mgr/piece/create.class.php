@@ -22,12 +22,15 @@ class seoFilterPieceCreateProcessor extends modObjectCreateProcessor {
 
 		$value = trim($this->getProperty('value'));
         $alias = trim($this->getProperty('alias'));
+        $alias = trim($alias, "/");
 		if (empty($value)) {
 			$this->modx->error->addField('value', $this->modx->lexicon('seofilter_err_empty'));
 		}
 		elseif (!empty($alias) && $this->modx->getCount($this->classKey, array('alias' => $alias))) {
 			$this->modx->error->addField('alias', $this->modx->lexicon('seofilter_err_unique'));
 		}
+
+        $this->setProperty('alias', $alias);
 
 		return parent::beforeSet();
 	}

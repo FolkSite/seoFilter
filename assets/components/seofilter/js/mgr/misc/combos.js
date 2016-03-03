@@ -27,7 +27,7 @@ seoFilter.combo.Param = function(config) {
         ,valueField: 'id'
         ,displayField: 'name'
         ,hiddenName: 'thread'
-        ,allowBlank: false
+        ,allowBlank: true
         ,url: seoFilter.config.connector_url
         ,baseParams: {
             action: 'mgr/param/getcombolist'
@@ -55,7 +55,7 @@ seoFilter.combo.Category = function(config) {
         ,displayField: 'pagetitle'
         ,name: 'parent-cmb'
         ,hiddenName: 'parent-cmp'
-        ,allowBlank: false
+        ,allowBlank: true
         ,url: seoFilter.config.connector_url
         ,baseParams: {
             action: 'mgr/resource/getcategories'

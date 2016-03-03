@@ -66,10 +66,10 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 			}
 		});
         var defaultValues = { };
-        //var gridParamFilter = this.getStore().baseParams.filter;
-        //if(typeof gridParamFilter != 'undefined') {
-        //    defaultValues.param = gridParamFilter;
-        //}
+        var gridContentFilter = this.getStore().baseParams.filter;
+        if(typeof gridContentFilter != 'undefined') {
+            defaultValues.resource_id = gridContentFilter;
+        }
         w.reset();
 		w.setValues(defaultValues);
 		w.show(e.target);
