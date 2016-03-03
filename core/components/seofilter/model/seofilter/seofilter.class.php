@@ -81,7 +81,7 @@ class seoFilter {
             return false;
         }
 
-        $check = false; // Обнуляем проверку
+        $count = 0; // Обнуляем проверку
         $filter_title = array();
         foreach ($pieces as $piece) {
             if (empty($piece)){
@@ -105,14 +105,16 @@ class seoFilter {
             $_POST[$param] = $value;
             $_REQUEST[$param] = $value;
 
-            $check = true;
+            $count++;
         }
 
-        $this->modx->setPlaceHolder('seo_filter_title', implode(" ", $filter_title));
-
         // Есть ли параметры
-        if ($check) {
-            // А теперь подсовывем юзеру страницу, а дальше сниппет на ней сам разберётся
+        if ($count > 0) {
+
+            $this->modx->setPlaceHolder('seo_filter_title', implode(" ", $filter_title));
+            $this->modx->setPlaceHolder('seo_filters_count', $count);
+
+            // Возвращаем найденную категорию
             return $section;
         }
 

@@ -20,6 +20,14 @@ $(".filter-number").each(function() {
     }
 });
 
+// убираем переход по ссылке, если она есть у чекбокса
+$(document).ready(function() {
+    $('#mse2_filters > fieldset > label > a').click(function(e) {
+        e.preventDefault();
+        $(this).parent().trigger('click');
+    });
+});
+
 // Set alias filter
 mSearch2.Hash.set = function(vars) {
     var hash = '', hash_seo_alias = [], hash_seo_get = [];
