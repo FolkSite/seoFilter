@@ -57,6 +57,7 @@ $_lang['seofilter_pieces_remove_confirm'] = 'Вы уверены, что хот�
 $_lang['seofilter_pieces_content'] = 'Тексты для фильтров';
 $_lang['seofilter_piece_content_id'] = 'Id';
 $_lang['seofilter_piece_content_resource_id'] = 'Id категории';
+$_lang['seofilter_piece_content_resource'] = 'Категория';
 $_lang['seofilter_piece_content_alias'] = 'Алиас фильтра';
 $_lang['seofilter_piece_content_pagetitle'] = 'Заголовок страницы';
 $_lang['seofilter_piece_content_title'] = 'Заголовок';

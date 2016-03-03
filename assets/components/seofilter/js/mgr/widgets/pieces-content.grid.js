@@ -143,7 +143,7 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 	},
 
 	getFields: function (config) {
-		return ['id', 'resource_id', 'alias', 'pagetitle', 'title', 'keywords', 'description', 'text1', 'text2', 'actions'];
+		return ['id', 'resource', 'resource_id', 'alias', 'pagetitle', /*'title', 'keywords', 'description', 'text1', 'text2',*/ 'actions'];
 	},
 
 	getColumns: function (config) {
@@ -152,12 +152,18 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 			dataIndex: 'id',
 			sortable: true,
 			width: 50
-		},*/ {
+		}, {
 			header: _('seofilter_piece_content_resource_id'),
 			dataIndex: 'resource_id',
 			sortable: true,
-			width: 150
-		}, {
+			width: 50
+		},*/ {
+            header: _('seofilter_piece_content_resource'),
+            dataIndex: 'resource',
+            sortable: true,
+            width: 150
+        },
+            {
             header: _('seofilter_piece_content_alias'),
             dataIndex: 'alias',
             sortable: true,
@@ -167,7 +173,7 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
             dataIndex: 'pagetitle',
             sortable: true,
             width: 150
-        }, {
+        },/* {
             header: _('seofilter_piece_content_title'),
             dataIndex: 'title',
             sortable: true,
@@ -192,7 +198,7 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
             dataIndex: 'text2',
             sortable: false,
             width: 150
-        }, {
+        },*/ {
 			header: _('seofilter_grid_actions'),
 			dataIndex: 'actions',
 			renderer: seoFilter.utils.renderActions,
@@ -207,8 +213,8 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 			text: '<i class="icon icon-plus"></i>&nbsp;' + _('seofilter_piece_content_create'),
 			handler: this.createPieceContent,
 			scope: this
-		}, '->',/*{
-            xtype: 'seofilter-combo-param',
+		}, '->',{
+            xtype: 'seofilter-combo-category',
             name: 'filter',
             width: 200,
             id: config.id + '-filter-field',
@@ -219,7 +225,7 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
                     scope: this
                 }
             }
-        },*/ {
+        }, {
 			xtype: 'textfield',
 			name: 'query',
 			width: 200,
@@ -277,11 +283,11 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 		return ids;
 	},
 
-    /*_doFilter: function (tf, nv, ov) {
+    _doFilter: function (tf, nv, ov) {
         this.getStore().baseParams.filter = tf.getValue();
         this.getBottomToolbar().changePage(1);
         this.refresh();
-    },*/
+    },
 	_doSearch: function (tf, nv, ov) {
 		this.getStore().baseParams.query = tf.getValue();
 		this.getBottomToolbar().changePage(1);

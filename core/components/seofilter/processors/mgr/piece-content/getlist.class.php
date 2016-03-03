@@ -32,23 +32,23 @@ class seoFilterPieceContentGetListProcessor extends modObjectGetListProcessor {
 	 * @return xPDOQuery
 	 */
 	public function prepareQueryBeforeCount(xPDOQuery $c) {
-        //$c->leftJoin('sfParam','Param','`sfPiece`.`param` = `Param`.`id`');
-        //$c->select($this->modx->getSelectColumns($this->classKey, $this->classKey, ''));
-        //$c->select('`Param`.`name` as `param_name`');
+        $c->leftJoin('modResource','Resource','`sfPieceContent`.`resource_id` = `Resource`.`id`');
+        $c->select($this->modx->getSelectColumns($this->classKey, $this->classKey, ''));
+        $c->select('`Resource`.`pagetitle` as `resource`, `Resource`.`uri` as `uri`');
 
-//        $filter = trim($this->getProperty('filter'));
-//        if ($filter) {
-//            $c->where(array(
-//                'param' => $filter
-//            ));
-//        }
+        $filter = trim($this->getProperty('filter'));
+        if ($filter) {
+            $c->where(array(
+                'resource_id' => $filter
+            ));
+        }
 
 		$query = trim($this->getProperty('query'));
 		if ($query) {
-//			$c->where(array(
-//				'value:LIKE' => "%{$query}%",
-//                'OR:alias:LIKE' => "%{$query}%",
-//			));
+			$c->where(array(
+				'alias:LIKE' => "%{$query}%",
+                'OR:pagetitle:LIKE' => "%{$query}%",
+			));
 		}
 
 		return $c;
@@ -62,7 +62,9 @@ class seoFilterPieceContentGetListProcessor extends modObjectGetListProcessor {
 	 */
 	public function prepareRow(xPDOObject $object) {
 		$array = $object->toArray();
-		$array['actions'] = array();
+        $array['resource'] = $array['resource'].' <span style="color:#999">('.$array['resource_id'].')</span><br /><small>'.$array['uri'].'</small>';
+
+        $array['actions'] = array();
 
 		// Edit
 		$array['actions'][] = array(

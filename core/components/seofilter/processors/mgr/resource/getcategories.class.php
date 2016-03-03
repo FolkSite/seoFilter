@@ -78,7 +78,10 @@ class seoFilterGetCategoriesProcessor extends modObjectGetListProcessor {
             'class_key' => 'msCategory'
         ));
         if ($query = $this->getProperty('query')) {
-            $c->where(array('pagetitle:LIKE' => "%$query%"));
+            $c->where(array(
+                array('pagetitle:LIKE' => "%$query%"),
+                array('uri:LIKE' => "%$query%")
+            ), xPDOQuery::SQL_OR);
         }
         else if ($this->item_id) {
             $c->where(array('id' => $this->item_id));
