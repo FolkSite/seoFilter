@@ -67,13 +67,38 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 		});
         var defaultValues = { };
         var gridParamFilter = this.getStore().baseParams.filter;
-        if(typeof gridParamFilter != 'undefined') {
+        if(typeof gridParamFilter != 'undefined' && gridParamFilter != '') {
             defaultValues.param = gridParamFilter;
         }
         w.reset();
 		w.setValues(defaultValues);
 		w.show(e.target);
 	},
+
+    generatePieces: function (btn, e) {
+        var gridParamFilter = this.getStore().baseParams.filter;
+        if(typeof gridParamFilter == 'undefined' || gridParamFilter == '') {
+            MODx.msg.alert(_('seofilter_pieces_generate'), _('seofilter_pieces_generate_err_no_filter'));
+            return false;
+        }
+
+        MODx.msg.confirm({
+            title: _('seofilter_pieces_generate'),
+            text: _('seofilter_pieces_generate_confirm'),
+            url: this.config.url,
+            params: {
+                action: 'mgr/piece/generate',
+                param: gridParamFilter
+            },
+            listeners: {
+                success: {
+                    fn: function (r) {
+                        this.refresh();
+                    }, scope: this
+                }
+            }
+        });
+    },
 
 	updatePiece: function (btn, e, row) {
 		if (typeof(row) != 'undefined') {
@@ -187,7 +212,13 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 			text: '<i class="icon icon-plus"></i>&nbsp;' + _('seofilter_piece_create'),
 			handler: this.createPiece,
 			scope: this
-		}, '->',{
+		},{
+            text: '<i class="icon icon-cubes"></i>&nbsp;' + _('seofilter_pieces_generate'),
+            handler: this.generatePieces,
+            scope: this
+        },
+            '->',
+        {
             xtype: 'seofilter-combo-param',
             name: 'filter',
             width: 200,

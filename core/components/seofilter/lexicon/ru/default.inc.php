@@ -53,6 +53,10 @@ $_lang['seofilter_pieces_remove'] = 'Удалить Значение';
 $_lang['seofilter_piece_remove_confirm'] = 'Вы уверены, что хотите удалить это Значение?';
 $_lang['seofilter_pieces_remove_confirm'] = 'Вы уверены, что хотите удалить эти Значения?';
 
+$_lang['seofilter_pieces_generate'] = 'Сгенерировать значения';
+$_lang['seofilter_pieces_generate_err_no_filter'] = 'Сначала выберите в Фильтре, для какого параметра произвести генерацию!';
+$_lang['seofilter_pieces_generate_confirm'] = 'Сгенерировать значения для указанного параметра?';
+
 # sfPieceContent
 $_lang['seofilter_pieces_content'] = 'Содержимое страниц-фильтра';
 $_lang['seofilter_piece_content_id'] = 'Id';
