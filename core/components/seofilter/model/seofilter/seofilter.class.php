@@ -11,6 +11,7 @@ class seoFilter {
 
     private $piecesMap;
 
+    const AUTO_LABEL = 'A';
 
 	/**
 	 * @param modX $modx
@@ -112,6 +113,7 @@ class seoFilter {
         if ($count > 0) {
 
             $this->modx->setPlaceHolder('seo_filter_title', implode(" ", $filter_title));
+            $this->modx->setPlaceHolder('seo_filter_alias', implode('/', $pieces));
             $this->modx->setPlaceHolder('seo_filters_count', $count);
 
             // Возвращаем найденную категорию
@@ -129,10 +131,11 @@ class seoFilter {
         return $this->piecesMap->getPieceData($alias);
     }
 
-    public function getCategoryMeta($data = array()){
+    public function getCategoryContent($data = array()){
         // пытаемся получить категорию, считая что к ее uri добавлен алиас фильтра
         $categoryId = $this->processUri($data['uri']);
         $category = null;
+
         if(!$categoryId || !$category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0))) {
             // а нет такой категории с фильтром, тогда берем просто текущую категорию
             if(!isset($data['page']) || !$category = $this->modx->getObject('msCategory', array('id' => intval($data['page']), 'published' => 1, 'deleted' => 0))) {
@@ -140,13 +143,62 @@ class seoFilter {
             }
         }
 
-        $this->modx->runSnippet('seoTags', array('resource' => $category->get('id')));
-
         $result = array();
-        $result['h1'] = $this->modx->runSnippet('pageTitle', array('resource' => $category->get('id')));
-        $result['title'] = $this->modx->getPlaceholder('seoTitle');
-        $result['keywords'] = $this->modx->getPlaceholder('seoKeywords');
-        $result['description'] = $this->modx->getPlaceholder('seoDescription');
+        $hasPieceContent = false;
+        $hasAuto = false;
+
+        $filter_alias = $this->modx->getPlaceholder('seo_filter_alias');
+        if(!empty($filter_alias)) {
+            $pieceContent = $this->modx->getObject('sfPieceContent', array('resource_id' => $category->get('id'), 'alias' => $filter_alias));
+            if($pieceContent) {
+                $hasPieceContent = true;
+                $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
+                foreach($fields as $field) {
+                    $result[$field] = $pieceContent->get($field);
+                    if($result[$field] == 'AUTO') {
+                        $hasAuto = true;
+                    }
+                }
+            }
+        }
+
+        if(!$hasPieceContent || ($hasPieceContent && $hasAuto)) {
+            $this->modx->runSnippet('seoTags', array('resource' => $category->get('id')));
+        }
+
+        // page title
+        if(!$hasPieceContent || $result['pagetitle'] == seoFilter::AUTO_LABEL) {
+            $result['pagetitle'] = $this->modx->runSnippet('pageTitle', array('resource' => $category->get('id')));
+        }
+        // meta tags
+        if(!$hasPieceContent || $result['title'] == seoFilter::AUTO_LABEL) {
+            $result['title'] = $this->modx->getPlaceholder('seoTitle');
+        }
+        if(!$hasPieceContent || $result['keywords'] == seoFilter::AUTO_LABEL) {
+            $result['keywords'] = $this->modx->getPlaceholder('seoKeywords');
+        }
+        if(!$hasPieceContent || $result['description'] == seoFilter::AUTO_LABEL) {
+            $result['description'] = $this->modx->getPlaceholder('seoDescription');
+        }
+        // page text
+        $text_fields = array('text1', 'text2');
+        $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
+        foreach($text_fields as $field) {
+            if(!$hasPieceContent || $result[$field] == seoFilter::AUTO_LABEL) {
+                $text_default_field = $this->modx->getOption('seofilter_'.$field.'_default_field');
+                if(!empty($text_default_field)) {
+                    $result[$field] = $category->get($text_default_field);
+
+                    // parse all cacheable tags first
+                    $this->modx->getParser()->processElementTags('', $result[$field], false, false, '[[', ']]', array(), $parserMaxIterations);
+                    // parse all non-cacheable and remove unprocessed tags
+                    $this->modx->getParser()->processElementTags('', $result[$field], true, true, '[[', ']]', array(), $parserMaxIterations);
+                }
+                else {
+                    $result[$field] = '';
+                }
+            }
+        }
 
         return $this->success('', $result);
     }

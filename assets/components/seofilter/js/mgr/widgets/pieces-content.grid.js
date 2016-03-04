@@ -65,7 +65,14 @@ Ext.extend(seoFilter.grid.PiecesContent, MODx.grid.Grid, {
 				}
 			}
 		});
-        var defaultValues = { };
+        var defaultValues = {
+            pagetitle: 'A',
+            text1: 'A',
+            text2: 'A',
+            title: 'A',
+            keywords: 'A',
+            description: 'A'
+        };
         var gridContentFilter = this.getStore().baseParams.filter;
         if(typeof gridContentFilter != 'undefined') {
             defaultValues.resource_id = gridContentFilter;

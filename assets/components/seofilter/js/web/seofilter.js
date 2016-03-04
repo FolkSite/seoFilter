@@ -103,15 +103,22 @@ function seoFilterUpdateCategoryMeta() {
             url: seoFilterConfig.actionUrl,
             dataType: "json",
             data: {
-                action: 'category/get_meta',
+                action: 'category/get_content',
                 page: pageId,
                 uri: window.location.pathname
             },
             cache: false,
             success: function(data) {
                 if(data.success) {
+                    // Update page content
+                    $('h1').html(data.data.pagetitle);
+                    $('#seo-filter-text1').html(data.data.text1);
+                    $('#seo-filter-text2').html(data.data.text2);
+                    // Update page meta
                     $('title').text(data.data.title);
-                    $('h1').html(data.data.h1);
+                    $('meta[name="description"]').attr('content', data.data.description);
+                    $('meta[name="keywords"]').attr('content', data.data.keywords);
+
                 }
 
                 //$('meta[name="keywords"]').attr("content", data.meta_keywords);

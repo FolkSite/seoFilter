@@ -29,8 +29,8 @@ if ($modx->error->hasError() || !($seoFilter instanceof seoFilter)) {
     die('Error');
 }
 switch ($action) {
-    case 'category/get_meta':
-        $response = $seoFilter->getCategoryMeta($_POST);
+    case 'category/get_content':
+        $response = $seoFilter->getCategoryContent($_POST);
         break;
     default:
         $response = $modx->toJSON(array('success' => false, 'message' => $modx->lexicon('seofilter_unknown_action')));

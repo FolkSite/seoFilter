@@ -5,9 +5,19 @@ $settings = array();
 $tmp = array(
 	'max_depth' => array(
 		'xtype' => 'numberfield',
-		'value' => 2,
+		'value' => 1,
 		'area' => 'seofilter_main',
 	),
+    'text1_default_field' => array(
+        'xtype' => 'textfield',
+        'value' => 'introtext',
+        'area' => 'seofilter_main',
+    ),
+    'text2_default_field' => array(
+        'xtype' => 'textfield',
+        'value' => 'content',
+        'area' => 'seofilter_main',
+    ),
 );
 
 foreach ($tmp as $k => $v) {
