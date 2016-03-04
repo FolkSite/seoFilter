@@ -10,3 +10,9 @@ $_lang['setting_seofilter_text1_default_field_desc'] = 'Укажите поле 
 
 $_lang['setting_seofilter_text2_default_field'] = 'Поле ресерса для text2 по-умолчанию';
 $_lang['setting_seofilter_text2_default_field_desc'] = 'Укажите поле ресурса, которое будет соответствовать text2 или очистите это поле';
+
+$_lang['setting_seofilter_show_text1'] = 'Отображать или нет text1';
+$_lang['setting_seofilter_show_text1_desc'] = 'Показывать text1 на страницах сео-фильтра';
+
+$_lang['setting_seofilter_show_text2'] = 'Отображать или нет text2';
+$_lang['setting_seofilter_show_text2_desc'] = 'Показывать text2 на страницах сео-фильтра';

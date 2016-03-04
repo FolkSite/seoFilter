@@ -13,7 +13,7 @@ $tmp = array(
     ),
     'seoTags.Sample' => array(
         'file' => 'seo_tags_sample',
-        'description' => 'Пример сниппета seoTags. Скопируйте этот сниппет для дальнейшего использования.',
+        'description' => "Пример сниппета seoTags. Скопируйте этот сниппет для дальнейшего использования.\n\n В чанках используйте плейсхолдеры [[!+seoTitle]], [[!+seoDescription]], [[!+seoKeywords]]",
     ),
 );
 

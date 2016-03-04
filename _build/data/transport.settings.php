@@ -18,6 +18,16 @@ $tmp = array(
         'value' => 'content',
         'area' => 'seofilter_main',
     ),
+    'show_text1' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_main',
+    ),
+    'show_text2' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_main',
+    ),
 );
 
 foreach ($tmp as $k => $v) {

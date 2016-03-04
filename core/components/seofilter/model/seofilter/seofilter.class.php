@@ -131,60 +131,96 @@ class seoFilter {
         return $this->piecesMap->getPieceData($alias);
     }
 
-    public function getCategoryContent($data = array()){
+    public function supersedeCategoryFilterContent($categoryId) {
+        $category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0));
+        if($category) {
+            $contentData = $this->getCategoryFilterContentInternal($category);
+            if(!empty($contentData)) {
+                $this->modx->setPlaceholder('seo_filter_supersede', '1');
+                foreach($contentData as $k => $v) {
+                    $this->modx->setPlaceholder('seo_filter_supersede_'.$k, $v);
+                }
+            }
+        }
+    }
+
+    public function getCategoryFilterContent($data = array()){
+        // uri и page - обязательные поля $data
+        if(empty($data['uri']) || empty($data['page'])) {
+            return false;
+        }
+
+        $category = null;
         // пытаемся получить категорию, считая что к ее uri добавлен алиас фильтра
         $categoryId = $this->processUri($data['uri']);
-        $category = null;
 
         if(!$categoryId || !$category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0))) {
             // а нет такой категории с фильтром, тогда берем просто текущую категорию
             if(!isset($data['page']) || !$category = $this->modx->getObject('msCategory', array('id' => intval($data['page']), 'published' => 1, 'deleted' => 0))) {
+                // и текущую не нашли, не судьба, выходим
                 return $this->error($this->modx->lexicon('seofilter_request_error'));
             }
         }
 
+        $result = $this->getCategoryFilterContentInternal($category);
+        if(!empty($result)) {
+            return $this->success('', $result);
+        }
+
+        return $this->error($this->modx->lexicon('seofilter_request_error'));
+    }
+
+    private function getCategoryFilterContentInternal(& $category){
+        $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
         $result = array();
-        $hasPieceContent = false;
-        $hasAuto = false;
+        // Default: AUTO
+        foreach($fields as $field) {
+            $result[$field] = seoFilter::AUTO_LABEL;
+        }
 
         $filter_alias = $this->modx->getPlaceholder('seo_filter_alias');
         if(!empty($filter_alias)) {
             $pieceContent = $this->modx->getObject('sfPieceContent', array('resource_id' => $category->get('id'), 'alias' => $filter_alias));
             if($pieceContent) {
-                $hasPieceContent = true;
-                $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
                 foreach($fields as $field) {
                     $result[$field] = $pieceContent->get($field);
-                    if($result[$field] == 'AUTO') {
-                        $hasAuto = true;
-                    }
+                }
+            }
+            else {
+                // если нетручного указания для этого alias фильтра, то см. системные настройки
+                // и скрываем текст, если соответсвующие настройки на это указывают
+                if(!$this->modx->getOption('seofilter_show_text1', null, true)) {
+                    $result['text1'] = '';
+                }
+                if(!$this->modx->getOption('seofilter_show_text2', null, true)) {
+                    $result['text2'] = '';
                 }
             }
         }
 
-        if(!$hasPieceContent || ($hasPieceContent && $hasAuto)) {
-            $this->modx->runSnippet('seoTags', array('resource' => $category->get('id')));
-        }
-
         // page title
-        if(!$hasPieceContent || $result['pagetitle'] == seoFilter::AUTO_LABEL) {
+        if($result['pagetitle'] == seoFilter::AUTO_LABEL) {
             $result['pagetitle'] = $this->modx->runSnippet('pageTitle', array('resource' => $category->get('id')));
         }
+
         // meta tags
-        if(!$hasPieceContent || $result['title'] == seoFilter::AUTO_LABEL) {
+        $this->modx->runSnippet('seoTags', array('resource' => $category->get('id')));
+
+        if($result['title'] == seoFilter::AUTO_LABEL) {
             $result['title'] = $this->modx->getPlaceholder('seoTitle');
         }
-        if(!$hasPieceContent || $result['keywords'] == seoFilter::AUTO_LABEL) {
+        if($result['keywords'] == seoFilter::AUTO_LABEL) {
             $result['keywords'] = $this->modx->getPlaceholder('seoKeywords');
         }
-        if(!$hasPieceContent || $result['description'] == seoFilter::AUTO_LABEL) {
+        if($result['description'] == seoFilter::AUTO_LABEL) {
             $result['description'] = $this->modx->getPlaceholder('seoDescription');
         }
+
         // page text
         $text_fields = array('text1', 'text2');
         $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
         foreach($text_fields as $field) {
-            if(!$hasPieceContent || $result[$field] == seoFilter::AUTO_LABEL) {
+            if($result[$field] == seoFilter::AUTO_LABEL) {
                 $text_default_field = $this->modx->getOption('seofilter_'.$field.'_default_field');
                 if(!empty($text_default_field)) {
                     $result[$field] = $category->get($text_default_field);
@@ -200,7 +236,7 @@ class seoFilter {
             }
         }
 
-        return $this->success('', $result);
+        return $result;
     }
 
 

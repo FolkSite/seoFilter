@@ -1,5 +1,13 @@
 <?php
 
+// проверяем, нет ли ручной установки meta страницы
+if($modx->getPlaceholder('seo_filter_supersede')) {
+    $modx->setPlaceholder('seoTitle', $modx->getPlaceholder('seo_filter_supersede_title'));
+    $modx->setPlaceholder('seoKeywords', $modx->getPlaceholder('seo_filter_supersede_keywords'));
+    $modx->setPlaceholder('seoDescription', $modx->getPlaceholder('seo_filter_supersede_description'));
+    return '';
+}
+
 if(empty($resource)) {
     $resource = & $modx->resource;
 }

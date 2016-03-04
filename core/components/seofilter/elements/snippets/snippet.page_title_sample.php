@@ -1,4 +1,10 @@
 <?php
+
+// проверяем, нет ли ручной установки заголовка страницы
+if($modx->getPlaceholder('seo_filter_supersede')) {
+    return $modx->getPlaceholder('seo_filter_supersede_pagetitle');
+}
+
 if(empty($resource)) {
     $resource = & $modx->resource;
 }

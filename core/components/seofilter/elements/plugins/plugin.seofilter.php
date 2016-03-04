@@ -9,8 +9,17 @@ if ($modx->event->name == 'OnPageNotFound') {
     $resourceId = $seoFilter->processUri();
     if ($resourceId) {
         // Есть такая виртульная страница, подсовывем ее юзеру
+        $seoFilter->supersedeCategoryFilterContent($resourceId);
         $modx->sendForward($resourceId);
     }
 }
 
-// Иначе ничего не делаем и юзер получает 404 или его перехватывает другой плагин.
+if($modx->event->name == 'OnLoadWebDocument') {
+    if($modx->getPlaceholder('seo_filter_supersede')) {
+        // Делаем ресурс не кэшируемым
+        $modx->resource->set('cacheable', 0);
+        // подменяем поля с текстом
+        $modx->resource->set($modx->getOption('seofilter_text1_default_field'), $modx->getPlaceholder('seo_filter_supersede_text1'));
+        $modx->resource->set($modx->getOption('seofilter_text2_default_field'), $modx->getPlaceholder('seo_filter_supersede_text2'));
+    }
+}
