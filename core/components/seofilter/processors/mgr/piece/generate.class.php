@@ -24,6 +24,7 @@ class seoFilterPiecesGenerateProcessor extends modProcessor {
         }
 
         // TODO: generate values
+        return $this->failure('Упс! Функция в разработке!');
 
         return $this->success($paramId);
     }
