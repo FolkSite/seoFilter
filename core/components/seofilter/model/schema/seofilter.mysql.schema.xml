@@ -6,7 +6,7 @@
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="type" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
 
-        <composite alias="Pieces" class="sfParamPiece" local="id" foreign="param" cardinality="many" owner="local" />
+        <composite alias="Pieces" class="sfPiece" local="id" foreign="param" cardinality="many" owner="local" />
     </object>
 
     <object class="sfPiece" table="sf_param_pieces" extends="xPDOSimpleObject">

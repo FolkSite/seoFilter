@@ -8,6 +8,7 @@ class seoFilterPiecesGenerateProcessor extends modProcessor {
     public $classKey = 'sfPiece';
     public $languageTopics = array('seofilter');
 
+    /* @var $param sfParam */
     private $param;
 
     /**
@@ -23,11 +24,95 @@ class seoFilterPiecesGenerateProcessor extends modProcessor {
             return $this->failure($this->modx->lexicon('seofilter_request_error'));
         }
 
-        // TODO: generate values
-        return $this->failure('Упс! Функция в разработке!');
+        $paramType = $this->param->get('type');
+
+        $pieces = null;
+        switch($paramType) {
+            case 'vendor':
+                $pieces = $this->generateVendorPieces();
+                break;
+            case 'field':
+                $pieces = $this->generateFieldPieces();
+                break;
+            case 'field_json':
+                $pieces = $this->generateFieldJsonPieces();
+                break;
+            default:
+                return $this->failure($this->modx->lexicon('seofilter_param_type_not_supported'));
+        }
+        if(!empty($pieces)) {
+            $this->param->addMany($pieces, 'Pieces');
+            $this->param->save();
+        }
 
         return $this->success($paramId);
     }
+
+    private function  generateVendorPieces()
+    {
+        $vendors = $this->modx->getIterator('msVendor');
+        $pieces = array();
+        foreach($vendors as $idx => $vendor) {
+            $piece = $this->modx->getObject('sfPiece', array('param' => $this->param->get('id'), 'value' => $vendor->get('id')));
+            if(!$piece) {
+                $pieces[] = $this->modx->newObject('sfPiece', array(
+                    'value' => $vendor->get('id'),
+                    'correction' => $vendor->get('name'),
+                ));
+            }
+        }
+        return $pieces;
+    }
+
+    private function generateFieldPieces() {
+        $pieces = array();
+        $paramName = $this->param->get('name');
+
+        $q = $this->modx->newQuery('msProductData');
+        $q->select('DISTINCT('.$paramName.')');
+        if ($q->prepare() && $q->stmt->execute()) {
+            $values = $q->stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($values as $value) {
+                $v = $value[$paramName];
+                if(!empty($v)) {
+                    $piece = $this->modx->getObject('sfPiece', array('param' => $this->param->get('id'), 'value' => $v));
+                    if(!$piece) {
+                        $pieces[] = $this->modx->newObject('sfPiece', array(
+                            'value' => $v,
+                        ));
+                    }
+                }
+            }
+        }
+        return $pieces;
+    }
+
+    private function generateFieldJsonPieces() {
+        $pieces = array();
+        $paramName = $this->param->get('name');
+
+        $q = $this->modx->newQuery('msProductOption');
+        $q->select('DISTINCT(value)');
+        $q->where(array('key' => $paramName));
+
+        if ($q->prepare() && $q->stmt->execute()) {
+            $values = $q->stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($values as $value) {
+                $v = $value['value'];
+                if(!empty($v)) {
+                    $piece = $this->modx->getObject('sfPiece', array('param' => $this->param->get('id'), 'value' => $v));
+                    if(!$piece) {
+                        $pieces[] = $this->modx->newObject('sfPiece', array(
+                            'value' => $v,
+                        ));
+                    }
+                }
+            }
+        }
+
+        return $pieces;
+    }
+
 }
 
 return 'seoFilterPiecesGenerateProcessor';
