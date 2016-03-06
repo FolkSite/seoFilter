@@ -46,13 +46,29 @@ class piecesMap {
                         'value' => $row['value'],
                         'alias' => $row['alias'],
                         'correction' => $row['correction'],
-                        'title' => !empty($row['correction']) ? $row['correction'] : $row['value'],
+                        'title' => $this->getPieceTitle($row['value'], $row['correction']),
                     );
                 }
             }
         }
 
         $this->mapsLoaded = true;
+    }
+
+    private function getPieceTitle($value, $correction) {
+        if(!empty($correction)) {
+            return $correction;
+        }
+
+        if(empty($value)) {
+            return '';
+        }
+
+        $first = mb_substr($value, 0, 1, 'UTF-8');
+        $last = mb_substr($value, 1, null, 'UTF-8');
+        $first = mb_strtolower($first, 'UTF-8');
+
+        return $first.$last;
     }
 
     public function getAlias($param, $value) {
