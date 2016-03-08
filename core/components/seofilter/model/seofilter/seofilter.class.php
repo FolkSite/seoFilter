@@ -43,12 +43,18 @@ class seoFilter {
 			'processorsPath' => $corePath . 'processors/',
 
             'json_response' => true,
+            'disable_meta_on_page_x' => $this->modx->getOption('seofilter_disable_meta_on_page_x', $config, true),
 		), $config);
 
 		$this->modx->addPackage('seofilter', $this->config['modelPath']);
 		$this->modx->lexicon->load('seofilter:default');
 	}
 
+    /**
+     * Метод разбирает $uri и определяет, является ли эта страница категорией с фильтром
+     * @param string $uri
+     * @return bool|int|mixed
+     */
     public function processUri($uri = '') {
         if(empty($uri)) {
             $request_param_alias = $this->modx->context->getOption('request_param_alias', 'q');
@@ -64,6 +70,7 @@ class seoFilter {
         $request = $page = trim($uri, "/");
         $pieces = explode('/', $request);
 
+        $section = null;
         for ($i = count($pieces); $i > 0; $i--) {
             // Определяем id раздела.
             if ($section = $this->modx->findResource($page.$container_suffix)) {
@@ -89,7 +96,7 @@ class seoFilter {
                 return false;
             }
 
-            $pieceData = $this->getParamValueByAlias($piece);
+            $pieceData = $this->piecesMap->findPieceData($piece);
             if(!$pieceData) {
                 return false;
             }
@@ -123,18 +130,41 @@ class seoFilter {
         return false;
     }
 
-    public function getParamValueAlias($param, $value) {
-        return $this->piecesMap->getAlias($param, $value);
+    public function findAlias($param, $value) {
+        return $this->piecesMap->findAlias($param, $value);
     }
 
-    public function getParamValueByAlias($alias){
-        return $this->piecesMap->getPieceData($alias);
+    public function getCategoryContentAjax($data = array()){
+        // uri и pageId - обязательные поля $data
+        if(empty($data['uri']) || empty($data['pageId'])) {
+            return $this->error($this->modx->lexicon('seofilter_request_error'));
+        }
+        /* @var $category modResource */
+        $category = null;
+        // пытаемся получить категорию, считая что к ее uri добавлен алиас фильтра
+        $categoryId = $this->processUri($data['uri']);
+
+        if(!$categoryId || !$category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0))) {
+            // а нет такой категории с фильтром, тогда берем просто текущую категорию
+            if(!isset($data['pageId']) || !$category = $this->modx->getObject('msCategory', array('id' => intval($data['pageId']), 'published' => 1, 'deleted' => 0))) {
+                // и текущую не нашли, не судьба, выходим
+                return $this->error($this->modx->lexicon('seofilter_request_error'));
+            }
+        }
+
+        $result = $this->getCategoryFilterContent($category);
+        if(!empty($result)) {
+            return $this->success('', $result);
+        }
+
+        return $this->error($this->modx->lexicon('seofilter_request_error'));
     }
 
-    public function supersedeCategoryFilterContent($categoryId) {
+    public function supersedeCategoryContent($categoryId) {
+        /* @var $category modResource */
         $category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0));
         if($category) {
-            $contentData = $this->getCategoryFilterContentInternal($category);
+            $contentData = $this->getCategoryFilterContent($category);
             if(!empty($contentData)) {
                 $this->modx->setPlaceholder('seo_filter_supersede', '1');
                 foreach($contentData as $k => $v) {
@@ -144,33 +174,14 @@ class seoFilter {
         }
     }
 
-    public function getCategoryFilterContent($data = array()){
-        // uri и page - обязательные поля $data
-        if(empty($data['uri']) || empty($data['page'])) {
-            return false;
-        }
-
-        $category = null;
-        // пытаемся получить категорию, считая что к ее uri добавлен алиас фильтра
-        $categoryId = $this->processUri($data['uri']);
-
-        if(!$categoryId || !$category = $this->modx->getObject('msCategory', array('id' => $categoryId, 'published' => 1, 'deleted' => 0))) {
-            // а нет такой категории с фильтром, тогда берем просто текущую категорию
-            if(!isset($data['page']) || !$category = $this->modx->getObject('msCategory', array('id' => intval($data['page']), 'published' => 1, 'deleted' => 0))) {
-                // и текущую не нашли, не судьба, выходим
-                return $this->error($this->modx->lexicon('seofilter_request_error'));
-            }
-        }
-
-        $result = $this->getCategoryFilterContentInternal($category);
-        if(!empty($result)) {
-            return $this->success('', $result);
-        }
-
-        return $this->error($this->modx->lexicon('seofilter_request_error'));
-    }
-
-    private function getCategoryFilterContentInternal(& $category){
+    /**
+     * Возвращает массив с meta и контентом для заданной категории с учетом фильтра
+     *
+     * @param $category modResource
+     *
+     * @return array
+     * */
+    private function getCategoryFilterContent(& $category){
         $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
         $result = array();
         // Default: AUTO
@@ -187,7 +198,7 @@ class seoFilter {
                 }
             }
             else {
-                // если нетручного указания для этого alias фильтра, то см. системные настройки
+                // если нет ручного указания для этого alias фильтра, то см. системные настройки
                 // и скрываем текст, если соответсвующие настройки на это указывают
                 if(!$this->modx->getOption('seofilter_show_text1', null, true)) {
                     $result['text1'] = '';

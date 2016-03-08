@@ -30,7 +30,7 @@ if ($modx->error->hasError() || !($seoFilter instanceof seoFilter)) {
 }
 switch ($action) {
     case 'category/get_content':
-        $response = $seoFilter->getCategoryFilterContent($_POST);
+        $response = $seoFilter->getCategoryContentAjax($_POST);
         break;
     default:
         $response = $modx->toJSON(array('success' => false, 'message' => $modx->lexicon('seofilter_unknown_action')));

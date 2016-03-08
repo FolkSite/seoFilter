@@ -8,8 +8,10 @@ if ($modx->event->name == 'OnPageNotFound') {
 
     $resourceId = $seoFilter->processUri();
     if ($resourceId) {
-        // Есть такая виртульная страница, подсовывем ее юзеру
-        $seoFilter->supersedeCategoryFilterContent($resourceId);
+        // Есть такая виртульная страница,
+        // получаем кастомные meta и содержимое
+        $seoFilter->supersedeCategoryContent($resourceId);
+        // и подсовывем ее юзеру
         $modx->sendForward($resourceId);
     }
 }
@@ -19,7 +21,13 @@ if($modx->event->name == 'OnLoadWebDocument') {
         // Делаем ресурс не кэшируемым
         $modx->resource->set('cacheable', 0);
         // подменяем поля с текстом
-        $modx->resource->set($modx->getOption('seofilter_text1_default_field'), $modx->getPlaceholder('seo_filter_supersede_text1'));
-        $modx->resource->set($modx->getOption('seofilter_text2_default_field'), $modx->getPlaceholder('seo_filter_supersede_text2'));
+        $t1 = $modx->getOption('seofilter_text1_default_field');
+        if(!empty($t1)) {
+            $modx->resource->set($t1, $modx->getPlaceholder('seo_filter_supersede_text1'));
+        }
+        $t2 = $modx->getOption('seofilter_text2_default_field');
+        if(!empty($t2)) {
+            $modx->resource->set($t2, $modx->getPlaceholder('seo_filter_supersede_text1'));
+        }
     }
 }

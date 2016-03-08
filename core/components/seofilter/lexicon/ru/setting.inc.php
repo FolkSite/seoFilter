@@ -16,3 +16,6 @@ $_lang['setting_seofilter_show_text1_desc'] = 'Показывать text1 на �
 
 $_lang['setting_seofilter_show_text2'] = 'Отображать или нет text2';
 $_lang['setting_seofilter_show_text2_desc'] = 'Показывать text2 на страницах сео-фильтра';
+
+$_lang['setting_seofilter_disable_meta_on_page_x'] = 'Отключить сео оптимизацию фильтра на стр. ?page=X';
+$_lang['setting_seofilter_disable_meta_on_page_x_desc'] = 'Выключает оптимизацию h1, title, keywords, description и устанавливает пустые text1, text2 если мы на странице каталога, отличной от 1';

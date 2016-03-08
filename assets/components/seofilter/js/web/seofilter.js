@@ -104,7 +104,8 @@ function seoFilterUpdateCategoryMeta() {
             dataType: "json",
             data: {
                 action: 'category/get_content',
-                page: pageId,
+                pageId: pageId,
+                page: mse2Config.page,
                 uri: window.location.pathname
             },
             cache: false,

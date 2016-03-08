@@ -46,7 +46,7 @@ class piecesMap {
                         'value' => $row['value'],
                         'alias' => $row['alias'],
                         'correction' => $row['correction'],
-                        'title' => $this->getPieceTitle($row['value'], $row['correction']),
+                        'title' => $this->buildPieceTitle($row['value'], $row['correction']),
                     );
                 }
             }
@@ -55,7 +55,7 @@ class piecesMap {
         $this->mapsLoaded = true;
     }
 
-    private function getPieceTitle($value, $correction) {
+    private function buildPieceTitle($value, $correction) {
         if(!empty($correction)) {
             return $correction;
         }
@@ -71,7 +71,7 @@ class piecesMap {
         return $first.$last;
     }
 
-    public function getAlias($param, $value) {
+    public function findAlias($param, $value) {
         if(!$this->mapsLoaded) {
             $this->loadMap();
         }
@@ -87,7 +87,7 @@ class piecesMap {
         return '';
     }
 
-    public function getPieceData($alias){
+    public function findPieceData($alias){
         if(empty($alias)) {
             return null;
         }

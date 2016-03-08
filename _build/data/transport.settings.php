@@ -28,6 +28,11 @@ $tmp = array(
         'value' => true,
         'area' => 'seofilter_main',
     ),
+    'disable_meta_on_page_x' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_main',
+    ),
 );
 
 foreach ($tmp as $k => $v) {
