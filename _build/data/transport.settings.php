@@ -11,27 +11,58 @@ $tmp = array(
     'text1_default_field' => array(
         'xtype' => 'textfield',
         'value' => 'introtext',
-        'area' => 'seofilter_main',
+        'area' => 'seofilter_meta_and_text',
     ),
     'text2_default_field' => array(
         'xtype' => 'textfield',
         'value' => 'content',
-        'area' => 'seofilter_main',
+        'area' => 'seofilter_meta_and_text',
     ),
     'show_text1' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
-        'area' => 'seofilter_main',
+        'area' => 'seofilter_meta_and_text',
     ),
     'show_text2' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
-        'area' => 'seofilter_main',
+        'area' => 'seofilter_meta_and_text',
     ),
     'disable_meta_on_page_x' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
-        'area' => 'seofilter_main',
+        'area' => 'seofilter_meta_and_text',
+    ),
+
+    'hide_introtext_on_page_x' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_meta_and_text',
+    ),
+    'hide_content_on_page_x' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_meta_and_text',
+    ),
+    'hide_introtext_on_seo_filter' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_meta_and_text',
+    ),
+    'hide_content_on_seo_filter' => array(
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'seofilter_meta_and_text',
+    ),
+    'hide_introtext_on_seo_filter_with_placeholder' => array(
+        'xtype' => 'combo-boolean',
+        'value' => false,
+        'area' => 'seofilter_meta_and_text',
+    ),
+    'hide_content_on_seo_filter_with_placeholder' => array(
+        'xtype' => 'combo-boolean',
+        'value' => false,
+        'area' => 'seofilter_meta_and_text',
     ),
 );
 

@@ -15,6 +15,10 @@ $tmp = array(
         'file' => 'seo_tags_sample',
         'description' => "Пример сниппета seoTags. Скопируйте этот сниппет для дальнейшего использования.\n\n В чанках используйте плейсхолдеры [[!+seoTitle]], [[!+seoDescription]], [[!+seoKeywords]]",
     ),
+    'seoContent' => array(
+        'file' => 'seo_content',
+        'description' => "",
+    ),
 );
 
 foreach ($tmp as $k => $v) {
