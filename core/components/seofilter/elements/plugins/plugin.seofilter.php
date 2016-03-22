@@ -27,7 +27,7 @@ if($modx->event->name == 'OnLoadWebDocument') {
         }
         $t2 = $modx->getOption('seofilter_text2_default_field');
         if(!empty($t2)) {
-            $modx->resource->set($t2, $modx->getPlaceholder('seo_filter_supersede_text1'));
+            $modx->resource->set($t2, $modx->getPlaceholder('seo_filter_supersede_text2'));
         }
     }
 }

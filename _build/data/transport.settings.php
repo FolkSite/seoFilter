@@ -18,28 +18,18 @@ $tmp = array(
         'value' => 'content',
         'area' => 'seofilter_meta_and_text',
     ),
-    'show_text1' => array(
-        'xtype' => 'combo-boolean',
-        'value' => true,
-        'area' => 'seofilter_meta_and_text',
-    ),
-    'show_text2' => array(
-        'xtype' => 'combo-boolean',
-        'value' => true,
-        'area' => 'seofilter_meta_and_text',
-    ),
-    'disable_meta_on_page_x' => array(
+    'disable_meta_paging' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'seofilter_meta_and_text',
     ),
 
-    'hide_introtext_on_page_x' => array(
+    'hide_introtext_paging' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'seofilter_meta_and_text',
     ),
-    'hide_content_on_page_x' => array(
+    'hide_content_paging' => array(
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'seofilter_meta_and_text',
@@ -54,12 +44,12 @@ $tmp = array(
         'value' => true,
         'area' => 'seofilter_meta_and_text',
     ),
-    'hide_introtext_on_seo_filter_with_placeholder' => array(
+    'hide_introtext_on_seo_filter_pls' => array(
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'seofilter_meta_and_text',
     ),
-    'hide_content_on_seo_filter_with_placeholder' => array(
+    'hide_content_on_seo_filter_pls' => array(
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'seofilter_meta_and_text',

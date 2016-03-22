@@ -43,7 +43,7 @@ class seoFilter {
 			'processorsPath' => $corePath . 'processors/',
 
             'json_response' => true,
-            'disable_meta_on_page_x' => $this->modx->getOption('seofilter_disable_meta_on_page_x', $config, true),
+            'disable_meta_paging' => $this->modx->getOption('seofilter_disable_meta_paging', $config, true),
 		), $config);
 
 		$this->modx->addPackage('seofilter', $this->config['modelPath']);
@@ -152,7 +152,7 @@ class seoFilter {
             }
         }
 
-        $result = $this->getCategoryFilterContent($category);
+        $result = $this->getCategoryFilterContent($category, true);
         if(!empty($result)) {
             return $this->success('', $result);
         }
@@ -178,13 +178,14 @@ class seoFilter {
      * Возвращает массив с meta и контентом для заданной категории с учетом фильтра
      *
      * @param $category modResource
+     * @param $processElementTags bool
      *
      * @return array
      * */
-    private function getCategoryFilterContent(& $category){
+    private function getCategoryFilterContent(& $category, $processElementTags = false){
         $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
         $result = array();
-        // Default: AUTO
+        // Задаем значения по-умолчанию: авто
         foreach($fields as $field) {
             $result[$field] = seoFilter::AUTO_LABEL;
         }
@@ -195,16 +196,11 @@ class seoFilter {
             if($pieceContent) {
                 foreach($fields as $field) {
                     $result[$field] = $pieceContent->get($field);
-                }
-            }
-            else {
-                // если нет ручного указания для этого alias фильтра, то см. системные настройки
-                // и скрываем текст, если соответсвующие настройки на это указывают
-                if(!$this->modx->getOption('seofilter_show_text1', null, true)) {
-                    $result['text1'] = '';
-                }
-                if(!$this->modx->getOption('seofilter_show_text2', null, true)) {
-                    $result['text2'] = '';
+
+                    if($result[$field] != seoFilter::AUTO_LABEL) {
+                        $df = $this->modx->getOption('seofilter_'.$field.'_default_field', null, $field);
+                        $this->modx->setPlaceholder('seo_filter_superseded_'.$df, true);
+                    }
                 }
             }
         }
@@ -236,10 +232,16 @@ class seoFilter {
                 if(!empty($text_default_field)) {
                     $result[$field] = $category->get($text_default_field);
 
-                    // parse all cacheable tags first
-                    $this->modx->getParser()->processElementTags('', $result[$field], false, false, '[[', ']]', array(), $parserMaxIterations);
-                    // parse all non-cacheable and remove unprocessed tags
-                    $this->modx->getParser()->processElementTags('', $result[$field], true, true, '[[', ']]', array(), $parserMaxIterations);
+                    if($processElementTags) {
+                        $result[$field] = $this->modx->runSnippet('seoContent', array('field' => $text_default_field, 'resource' => $category->get('id')));
+                    }
+
+                    if($processElementTags){
+                        // parse all cacheable tags first
+                        $this->modx->getParser()->processElementTags('', $result[$field], false, false, '[[', ']]', array(), $parserMaxIterations);
+                        // parse all non-cacheable and remove unprocessed tags
+                        $this->modx->getParser()->processElementTags('', $result[$field], true, true, '[[', ']]', array(), $parserMaxIterations);
+                    }
                 }
                 else {
                     $result[$field] = '';

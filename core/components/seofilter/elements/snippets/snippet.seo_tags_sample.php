@@ -6,7 +6,7 @@ $page = 0;
 $pageSuffix = '';
 if(isset($_REQUEST[$pageVarKey])){
     $page = intval($_REQUEST[$pageVarKey]);
-    if(!empty($page)) {
+    if($page > 1) {
         $pageSuffix = ', страница '.$page;
     }
 }
