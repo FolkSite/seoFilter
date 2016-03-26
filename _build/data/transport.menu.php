@@ -3,7 +3,11 @@
 $menus = array();
 
 $tmp = array(
+    'superFilter' => array(
+        'description' => 'superFilter_menu_desc',
+    ),
 	'seoFilter' => array(
+        'parent' => 'superFilter',
 		'description' => 'seofilter_menu_desc',
 		'action' => array(
 			'controller' => 'index',

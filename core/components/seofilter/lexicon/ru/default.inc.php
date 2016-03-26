@@ -1,8 +1,14 @@
 <?php
 include_once 'setting.inc.php';
 
+$_lang['superFilter'] = 'Фильтры';
+$_lang['superFilter_menu'] = 'Фильтры';
+$_lang['superFilter_menu_desc'] = 'Управление фильтрами';
+
+
 # base
-$_lang['seofilter'] = 'Управление сео фильтром';
+$_lang['seofilter'] = 'Управление SEO фильтром';
+$_lang['seoFilter'] = 'SEO фильтр';
 $_lang['seofilter_menu_desc'] = 'Управление параметрами фильтра.';
 $_lang['seofilter_intro_msg'] = 'Вы можете выделять сразу несколько строк при помощи Shift или Ctrl.';
 $_lang['seofilter_unknown_action'] = 'Неизвестное действие';
