@@ -87,6 +87,32 @@ class piecesMap {
         return '';
     }
 
+    public function findDeepAlias($pieces, $alias, $param, $value) {
+        $result = array();
+        foreach($this->map as $p => $data) {
+            if($param == $p) {
+                $result[] = $alias;
+            }
+            else{
+                foreach($data['pieces'] as $k => $v) {
+                    if(in_array($k, $pieces)) {
+                        $result[] = $k;
+                        break;
+                    }
+                }
+            }
+        }
+
+        //print_r($result);
+        //die;
+
+        if(count($result) == count($pieces) + 1) {
+            return $result;
+        }
+
+        return null;
+    }
+
     public function findPieceData($alias){
         if(empty($alias)) {
             return null;

@@ -11,6 +11,11 @@ class seoFilter {
 
     private $piecesMap;
 
+    private $max_depth = 1;
+
+    private $filtersCount = 0;
+    private $filterPieces = array();
+
     const AUTO_LABEL = 'A';
 
 	/**
@@ -21,6 +26,8 @@ class seoFilter {
 		$this->modx =& $modx;
 
         $this->piecesMap = new piecesMap($modx);
+
+        $this->max_depth = $this->modx->getOption('seofilter_max_depth', 1);
 
 		$corePath = $this->modx->getOption('seofilter_core_path', $config, $this->modx->getOption('core_path') . 'components/seofilter/');
 		$assetsUrl = $this->modx->getOption('seofilter_assets_url', $config, $this->modx->getOption('assets_url') . 'components/seofilter/');
@@ -64,8 +71,6 @@ class seoFilter {
             $uri = $_REQUEST[$request_param_alias];
         }
 
-        $max_depth = $this->modx->getOption('seofilter_max_depth', 1);
-
         $container_suffix = $this->modx->context->getOption('container_suffix', '');
         $request = $page = trim($uri, "/");
         $pieces = explode('/', $request);
@@ -85,7 +90,7 @@ class seoFilter {
 
         $pieces = explode('/', trim(str_replace($page, '', $request), '/'));
 
-        if(count($pieces) > $max_depth) {
+        if(count($pieces) > $this->max_depth) {
             return false;
         }
 
@@ -119,6 +124,8 @@ class seoFilter {
         // Есть ли параметры
         if ($count > 0) {
 
+            $this->filtersCount = $count;
+            $this->filterPieces = $pieces;
             $this->modx->setPlaceHolder('seo_filter_title', implode(" ", $filter_title));
             $this->modx->setPlaceHolder('seo_filter_alias', implode('/', $pieces));
             $this->modx->setPlaceHolder('seo_filters_count', $count);
@@ -131,7 +138,35 @@ class seoFilter {
     }
 
     public function findAlias($param, $value) {
-        return $this->piecesMap->findAlias($param, $value);
+
+        // можно отключить генерацию ссылки, если сейчас смотрим фильтр максимально возможной вложенности
+        //if($this->filtersCount >= $this->max_depth) {
+        //    return '';
+        //}
+
+        $alias = $this->piecesMap->findAlias($param, $value);
+        if(empty($alias)) {
+            return ':';
+        }
+
+        // сейчас смотрим страницу уже с фильтром, но не максимально возможного уровня
+        if($this->filtersCount > 0 && $this->filtersCount < $this->max_depth) {
+            $aliases = $this->piecesMap->findDeepAlias($this->filterPieces, $alias, $param, $value);
+            if(!empty($aliases)) {
+                return $alias.':'.implode("/", $aliases);
+            }
+        }
+
+        // в остальных случаях просто генерируем ссылки на фильтры первого уровня
+
+        return $alias.':'.$alias;
+
+        // простой случай, фильтр первого уровня
+        //if($this->filtersCount == 0) {
+        //    return $this->piecesMap->findAlias($param, $value);
+        //}
+
+        //return '';
     }
 
     public function getCategoryContentAjax($data = array()){

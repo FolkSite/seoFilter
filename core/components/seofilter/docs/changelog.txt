@@ -22,7 +22,7 @@ Changelog for seofilter.
 - Improved processors
 - Disabled plugin and system settings
 - Improved UI
-- Added grid actions
+- Added grid actionsfindAlias
 - Added icons in menu
 - Added search in grid
 - Grid sorting

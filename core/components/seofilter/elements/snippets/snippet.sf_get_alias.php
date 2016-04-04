@@ -4,7 +4,7 @@ $param = empty($param) ? '' : $param;
 $value = empty($value) ? '' : $value;
 
 if(empty($param) || empty($value)) {
-    return '';
+    return ':';
 }
 
 /** @var array $scriptProperties */
