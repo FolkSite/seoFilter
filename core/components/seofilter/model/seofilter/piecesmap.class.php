@@ -94,6 +94,8 @@ class piecesMap {
                 $result[] = $alias;
             }
             else{
+                // TODO: порядок должен быть как в visualFilter
+                // необходимо как-то решить данный вопрос
                 foreach($data['pieces'] as $k => $v) {
                     if(in_array($k, $pieces)) {
                         $result[] = $k;
