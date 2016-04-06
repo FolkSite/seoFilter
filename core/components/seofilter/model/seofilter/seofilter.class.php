@@ -144,16 +144,27 @@ class seoFilter {
         //    return '';
         //}
 
+        // получаем alias для ссылки первого уровня
         $alias = $this->piecesMap->findAlias($param, $value);
         if(empty($alias)) {
             return ':';
         }
 
-        // сейчас смотрим страницу уже с фильтром, но не максимально возможного уровня
-        if($this->filtersCount > 0 && $this->filtersCount < $this->max_depth) {
-            $aliases = $this->piecesMap->findDeepAlias($this->filterPieces, $alias, $param, $value);
-            if(!empty($aliases)) {
-                return $alias.':'.implode("/", $aliases);
+        // получаем фильтры категории, жесткая связь с компонентом visualFilter
+        $cacheOptions = array( xPDO::OPT_CACHE_KEY => 'default/visual_filter' );
+        $cacheKey = 'category_'.$this->modx->resource->get('id').'_filters';
+
+        $categoryFilters = $this->modx->cacheManager->get($cacheKey, $cacheOptions);
+
+        // если в кеше есть данные о порядке фильтров,
+        // то мы можем попробовать сгенерировать ссылки на фильтры уровня N
+        if(!empty($categoryFilters)) {
+            // сейчас смотрим страницу уже с фильтром, но не максимально возможного уровня
+            if($this->filtersCount > 0 && $this->filtersCount < $this->max_depth) {
+                $aliases = $this->piecesMap->findDeepAlias($categoryFilters, $this->filterPieces, $alias, $param, $value);
+                if(!empty($aliases)) {
+                    return $alias.':'.implode("/", $aliases);
+                }
             }
         }
 

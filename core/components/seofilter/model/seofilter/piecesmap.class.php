@@ -87,26 +87,23 @@ class piecesMap {
         return '';
     }
 
-    public function findDeepAlias($pieces, $alias, $param, $value) {
+    public function findDeepAlias($categoryFilters, $pieces, $alias, $param) {
         $result = array();
-        foreach($this->map as $p => $data) {
-            if($param == $p) {
-                $result[] = $alias;
-            }
-            else{
-                // TODO: порядок должен быть как в visualFilter
-                // необходимо как-то решить данный вопрос
-                foreach($data['pieces'] as $k => $v) {
-                    if(in_array($k, $pieces)) {
-                        $result[] = $k;
-                        break;
+        foreach($categoryFilters as $currentFilter) {
+            if(array_key_exists($currentFilter, $this->map)) {
+                if($param == $currentFilter) {
+                    $result[] = $alias;
+                }
+                else{
+                    foreach($this->map[$currentFilter]['pieces'] as $k => $v) {
+                        if(in_array($k, $pieces)) {
+                            $result[] = $k;
+                            break;
+                        }
                     }
                 }
             }
         }
-
-        //print_r($result);
-        //die;
 
         if(count($result) == count($pieces) + 1) {
             return $result;
