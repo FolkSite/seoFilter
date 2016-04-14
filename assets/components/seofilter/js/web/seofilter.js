@@ -83,21 +83,13 @@ mSearch2.Hash.set = function(vars) {
     }
 };
 
-
-mSearch2.afterLoad = function() {
-
-    // custom
+$(document).on('mse2_load', function(e) {
     seoFilterUpdateCategoryMeta();
-
-    // default mSearch behavior
-    this.results.css('opacity', 1);
-    this.filters.find('.' + this.options.disabled_class).prop('disabled', false).removeClass(this.options.disabled_class);
-};
+});
 
 function seoFilterUpdateCategoryMeta() {
     var pageId = $(mSearch2.options.wrapper).data('page');
     if (pageId !== undefined) {
-        //var brand = $("input[name='brand']:checked").length == 1 ? $("input[name='brand']:checked").attr('value') : 'default-content-return';
         $.ajax({
             type: "POST",
             url: seoFilterConfig.actionUrl,
@@ -112,24 +104,22 @@ function seoFilterUpdateCategoryMeta() {
             success: function(data) {
                 if(data.success) {
                     // Update page content
+
+                    //$('.crumbs-container').html(data.crumbs);
+
                     $('h1').html(data.data.pagetitle);
                     $('#seo-filter-text1').html(data.data.text1);
                     $('#seo-filter-text2').html(data.data.text2);
+
                     // Update page meta
                     $('title').text(data.data.title);
                     $('meta[name="description"]').attr('content', data.data.description);
                     $('meta[name="keywords"]').attr('content', data.data.keywords);
 
                 }
-
-                //$('meta[name="keywords"]').attr("content", data.meta_keywords);
-                //$('meta[name="description"]').attr("content", data.meta_description);
-                //$('.crumbs-container').html(data.crumbs);
-
-                //$('.resource-text-content').html(data.text);
             },
             error: function(){
-                alert('seoFilter update meta error.');
+                alert('seoFilter update category meta error.');
             }
         });
     }
