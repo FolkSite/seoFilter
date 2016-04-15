@@ -20,9 +20,10 @@ ul.seofilter-row-actions .btn {
 }
 
 .seofilter-grid-row-disabled {
-	font-style: italic;
-	opacity: .6;
-	color: #555;
+	color: #aaa;
+}
+.seofilter-grid-row-not-used {
+    color: rgba(173,58,58,1)!important;
 }
 
 .action-red {

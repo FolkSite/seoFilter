@@ -10,6 +10,9 @@ class seoFilterPieceGetListProcessor extends modObjectGetListProcessor {
 	public $defaultSortDirection = 'ASC';
 	//public $permission = 'list';
 
+    private $findUnused = false;
+    /** @var sfParam $param */
+    private $param;
 
 	/**
 	 * * We doing special check of permission
@@ -36,11 +39,13 @@ class seoFilterPieceGetListProcessor extends modObjectGetListProcessor {
         $c->select($this->modx->getSelectColumns($this->classKey, $this->classKey, ''));
         $c->select('`Param`.`name` as `param_name`');
 
-        $filter = trim($this->getProperty('filter'));
-        if ($filter) {
+        $paramId = trim($this->getProperty('filter'));
+        if ($paramId) {
             $c->where(array(
-                'param' => $filter
+                'param' => $paramId
             ));
+            $this->findUnused = true;
+            $this->param = $this->modx->getObject('sfParam', $paramId);
         }
 
 		$query = trim($this->getProperty('query'));
@@ -54,7 +59,6 @@ class seoFilterPieceGetListProcessor extends modObjectGetListProcessor {
 		return $c;
 	}
 
-
 	/**
 	 * @param xPDOObject $object
 	 *
@@ -62,6 +66,42 @@ class seoFilterPieceGetListProcessor extends modObjectGetListProcessor {
 	 */
 	public function prepareRow(xPDOObject $object) {
 		$array = $object->toArray();
+        $array['use_count'] = '-';
+
+        if($this->findUnused) {
+            $paramType = $this->param->get('type');
+            if($paramType == 'field') {
+                $paramName = $this->param->get('name');
+                $q = $this->modx->newQuery('msProductData');
+                $q->where(array(
+                    $paramName => $array['value']
+                ));
+                $array['use_count'] = $this->modx->getCount('msProductData', $q);
+            }
+            else if($paramType == 'field_json') {
+                $paramName = $this->param->get('name');
+                $q = $this->modx->newQuery('msProductOption');
+                $q->select('COUNT(*) as count');
+                $q->where(array(
+                    'key' => $paramName,
+                    'value' => $array['value']
+                ));
+                $q->prepare();
+                $q->stmt->execute();
+                $result = $q->stmt->fetch(PDO::FETCH_ASSOC);
+                $array['use_count'] = $result['count'];
+            }
+            else if($paramType == 'vendor') {
+                $q = $this->modx->newQuery('msProductData');
+                $q->where(array(
+                    'vendor' => $array['value']
+                ));
+                $array['use_count'] = $this->modx->getCount('msProductData', $q);
+            }
+        }
+
+
+
 		$array['actions'] = array();
 
 		// Edit

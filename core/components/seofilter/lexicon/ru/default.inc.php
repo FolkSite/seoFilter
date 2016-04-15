@@ -34,8 +34,8 @@ $_lang['seofilter_params'] = 'Параметры';
 $_lang['seofilter_param_id'] = 'Id';
 $_lang['seofilter_param_name'] = 'Имя';
 $_lang['seofilter_param_type'] = 'Тип';
-$_lang['seofilter_param_type_field'] = 'Параметр товара';
-$_lang['seofilter_param_type_field_json'] = 'Параметр товара JSON';
+$_lang['seofilter_param_type_field'] = 'Простое поле товара';
+$_lang['seofilter_param_type_field_json'] = 'JSON поле товара';
 $_lang['seofilter_param_type_vendor'] = 'Производитель';
 
 $_lang['seofilter_param_create'] = 'Добавить Параметр';
@@ -52,6 +52,7 @@ $_lang['seofilter_piece_param'] = 'Параметр';
 $_lang['seofilter_piece_value'] = 'Значение';
 $_lang['seofilter_piece_alias'] = 'Алиас';
 $_lang['seofilter_piece_correction'] = 'Уточнение значения';
+$_lang['seofilter_piece_use_count'] = 'Кол-во использований';
 
 $_lang['seofilter_piece_create'] = 'Добавить Значение';
 $_lang['seofilter_piece_update'] = 'Изменить Значение';

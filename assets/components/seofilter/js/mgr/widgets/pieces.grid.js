@@ -25,7 +25,11 @@ seoFilter.grid.Pieces = function (config) {
 			showPreview: true,
 			scrollOffset: 0,
 			getRowClass: function (rec, ri, p) {
-				return !rec.data.alias ? 'seofilter-grid-row-disabled' : '';
+                var result = [];
+                if(!rec.data.alias) { result.push('seofilter-grid-row-disabled'); }
+                if(rec.data.use_count == '0') { result.push('seofilter-grid-row-not-used'); }
+
+				return  result.join(' ');
 			}
 		},
 		paging: true,
@@ -168,7 +172,7 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
 	},
 
 	getFields: function (config) {
-		return ['id', 'param_name', 'value', 'alias', 'correction', 'actions'];
+		return ['id', 'param_name', 'value', 'alias', 'correction', 'use_count', 'actions'];
 	},
 
 	getColumns: function (config) {
@@ -196,6 +200,11 @@ Ext.extend(seoFilter.grid.Pieces, MODx.grid.Grid, {
             header: _('seofilter_piece_correction'),
             dataIndex: 'correction',
             sortable: true,
+            width: 150
+        }, {
+            header: _('seofilter_piece_use_count'),
+            dataIndex: 'use_count',
+            sortable: false,
             width: 150
         }, {
 			header: _('seofilter_grid_actions'),
