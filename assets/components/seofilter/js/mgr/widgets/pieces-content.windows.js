@@ -4,9 +4,13 @@ seoFilter.window.getPieceContentWindowFields = function (config, isCreate) {
             resource_id: {xtype: 'seofilter-combo-category', anchor: '99%',allowBlank: false, hiddenName: 'resource_id' /*, value: config.record.parent,*/ },
             //resource_id: {xtype: 'textfield', anchor: '99%',allowBlank: false},
             alias: {xtype: 'textfield', anchor: '99%', allowBlank: false },
-            pagetitle: {xtype: 'textfield', anchor: '99%', allowBlank: true },
-            text1: {xtype: 'textarea', anchor: '99%', allowBlank: true },
-            text2: {xtype: 'textarea', anchor: '99%', allowBlank: true }
+            pagetitle: {xtype: 'textfield', anchor: '99%', allowBlank: true }
+        },
+        tab_text1: {
+            text1: {xtype: 'textarea', anchor: '99%', allowBlank: true, height: 350 }
+        },
+        tab_text2: {
+            text2: {xtype: 'textarea', anchor: '99%', allowBlank: true, height: 350 }
         },
         tab_seo: {
             title: {xtype: 'textfield', anchor: '99%', allowBlank: true },

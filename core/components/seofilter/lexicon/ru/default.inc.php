@@ -86,4 +86,6 @@ $_lang['seofilter_piece_content_remove_confirm'] = 'Вы уверены, что 
 $_lang['seofilter_pieces_content_remove_confirm'] = 'Вы уверены, что хотите удалить эти записи?';
 
 $_lang['seofilter_piece_content_tab_general'] = 'Общие';
+$_lang['seofilter_piece_content_tab_text1'] = 'Текст 1';
+$_lang['seofilter_piece_content_tab_text2'] = 'Текст 2';
 $_lang['seofilter_piece_content_tab_seo'] = 'Сео параметры';
