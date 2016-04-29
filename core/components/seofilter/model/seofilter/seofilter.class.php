@@ -230,6 +230,7 @@ class seoFilter {
      * */
     private function getCategoryFilterContent(& $category, $processElementTags = false){
         $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
+        $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
         $result = array();
         // Задаем значения по-умолчанию: авто
         foreach($fields as $field) {
@@ -244,6 +245,12 @@ class seoFilter {
                     $result[$field] = $pieceContent->get($field);
 
                     if($result[$field] != seoFilter::AUTO_LABEL) {
+                        if($processElementTags){
+                            // parse all cacheable tags first
+                            $this->modx->getParser()->processElementTags('', $result[$field], false, false, '[[', ']]', array(), $parserMaxIterations);
+                            // parse all non-cacheable and remove unprocessed tags
+                            $this->modx->getParser()->processElementTags('', $result[$field], true, true, '[[', ']]', array(), $parserMaxIterations);
+                        }
                         $df = $this->modx->getOption('seofilter_'.$field.'_default_field', null, $field);
                         $this->modx->setPlaceholder('seo_filter_superseded_'.$df, true);
                     }
@@ -271,7 +278,7 @@ class seoFilter {
 
         // page text
         $text_fields = array('text1', 'text2');
-        $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
+
         foreach($text_fields as $field) {
             if($result[$field] == seoFilter::AUTO_LABEL) {
                 $text_default_field = $this->modx->getOption('seofilter_'.$field.'_default_field');
