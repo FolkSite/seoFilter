@@ -8,6 +8,11 @@ $tmp = array(
 		'value' => 1,
 		'area' => 'seofilter_main',
 	),
+    'before_get_content_snippet' => array(
+        'xtype' => 'textfield',
+        'value' => '',
+        'area' => 'seofilter_main',
+    ),
     'text1_default_field' => array(
         'xtype' => 'textfield',
         'value' => 'introtext',

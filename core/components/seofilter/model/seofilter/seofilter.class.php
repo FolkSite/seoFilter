@@ -229,6 +229,10 @@ class seoFilter {
      * @return array
      * */
     private function getCategoryFilterContent(& $category, $processElementTags = false){
+        if($snippet = $this->modx->getOption('seofilter_before_get_content_snippet', null, '')) {
+            $this->modx->runSnippet($snippet);
+        }
+
         $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
         $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
         $result = array();
