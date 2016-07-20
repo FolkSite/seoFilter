@@ -236,11 +236,12 @@ class seoFilter {
         $fields = array('pagetitle', 'title', 'keywords', 'description', 'text1', 'text2');
         $parserMaxIterations = (integer) $this->modx->getOption('parser_max_iterations', null, 10);
         $result = array();
-        // Задаем значения по-умолчанию: авто
+        // Шаг 0. Задаем значения по-умолчанию: авто
         foreach($fields as $field) {
             $result[$field] = seoFilter::AUTO_LABEL;
         }
 
+        // Шаг 1. Ищем текст фильтра (piece content)
         $filter_alias = $this->modx->getPlaceholder('seo_filter_alias');
         if(!empty($filter_alias)) {
             $pieceContent = $this->modx->getObject('sfPieceContent', array('resource_id' => $category->get('id'), 'alias' => $filter_alias));
@@ -280,7 +281,40 @@ class seoFilter {
             $result['description'] = $this->modx->getPlaceholder('seoDescription');
         }
 
-        // page text
+        // Шаг 2. Ищем авто-текст (текст по-умолчанию)
+        if(!empty($filter_alias)) {
+
+            $defaultContent = $this->modx->getObject('sfDefaultContent', array('resource_id' => $category->get('id'), 'active' => true));
+            if(!$defaultContent) {
+                $parents = $this->modx->getParentIds($category->get('id'));
+                foreach($parents as $categoryId) {
+                    if($defaultContent = $this->modx->getObject('sfDefaultContent', array('resource_id' => $categoryId, 'active' => true, 'children' => true))){
+                        break;
+                    };
+                }
+            }
+
+            if($defaultContent) {
+                foreach(array('text1', 'text2') as $field) {
+                    $df = $this->modx->getOption('seofilter_'.$field.'_default_field', null, $field);
+                    if(!$this->modx->getPlaceholder('seo_filter_superseded_'.$df)){
+                        $result[$field] = $defaultContent->get($field);
+
+                        if($processElementTags){
+                            // parse all cacheable tags first
+                            $this->modx->getParser()->processElementTags('', $result[$field], false, false, '[[', ']]', array(), $parserMaxIterations);
+                            // parse all non-cacheable and remove unprocessed tags
+                            $this->modx->getParser()->processElementTags('', $result[$field], true, true, '[[', ']]', array(), $parserMaxIterations);
+                        }
+                        $df = $this->modx->getOption('seofilter_'.$field.'_default_field', null, $field);
+                        $this->modx->setPlaceholder('seo_filter_superseded_'.$df, true);
+                    }
+                }
+            }
+        }
+
+
+        // Шаг 3. Текст категории
         $text_fields = array('text1', 'text2');
 
         foreach($text_fields as $field) {

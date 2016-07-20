@@ -35,6 +35,12 @@ if($isSeoFilterPage) {
     $hasFilterPlaceholder = (strpos($text, "+seo_filter_") === false) ? false : true;
 }
 
+// TODO: где-то здесь добавить обработку sfDefaultContent
+// ...
+// ...
+// ...
+
+
 // если это сео фильтр..
 if($isSeoFilterPage) {
     // ..и есть плейсхолдер - проверяем сист. настройку и скрываем поле, если надо

@@ -49,5 +49,20 @@
         <aggregate alias="Resource" class="modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
     </object>
 
-    
+    <object class="sfDefaultContent" table="sf_default_content" extends="xPDOSimpleObject">
+        <field key="resource_id" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="1" />
+        <field key="children" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="priority" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
+
+        <field key="text1" dbtype="text" phptype="string" null="false" default="" />
+        <field key="text2" dbtype="text" phptype="string" null="false" default="" />
+
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="" collation="A" null="false" />
+        </index>
+
+        <aggregate alias="Resource" class="modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
 </model>

@@ -38,6 +38,8 @@ class seoFilterHomeManagerController extends seoFilterMainController {
         $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/pieces.windows.js');
         $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/pieces-content.grid.js');
         $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/pieces-content.windows.js');
+        $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/default-content.grid.js');
+        $this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/default-content.windows.js');
 		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/widgets/home.panel.js');
 		$this->addJavascript($this->seoFilter->config['jsUrl'] . 'mgr/sections/home.js');
 		$this->addHtml('<script type="text/javascript">

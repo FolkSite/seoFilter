@@ -32,7 +32,7 @@ $xpdo_meta_map['sfParam']= array (
   array (
     'Pieces' => 
     array (
-      'class' => 'sfParamPiece',
+      'class' => 'sfPiece',
       'local' => 'id',
       'foreign' => 'param',
       'cardinality' => 'many',

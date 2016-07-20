@@ -89,3 +89,25 @@ $_lang['seofilter_piece_content_tab_general'] = 'Общие';
 $_lang['seofilter_piece_content_tab_text1'] = 'Текст 1';
 $_lang['seofilter_piece_content_tab_text2'] = 'Текст 2';
 $_lang['seofilter_piece_content_tab_seo'] = 'Сео параметры';
+
+# sfDefaultContent
+$_lang['seofilter_default_content'] = 'Тексты по-умолчанию';
+$_lang['seofilter_default_content_id'] = 'Id';
+$_lang['seofilter_default_content_resource_id'] = 'Id категории';
+$_lang['seofilter_default_content_resource'] = 'Категория';
+$_lang['seofilter_default_content_children'] = 'Вкл. дочерние';
+$_lang['seofilter_default_content_priority'] = 'Приоритет';
+$_lang['seofilter_default_content_active'] = 'Активен';
+$_lang['seofilter_default_content_text1'] = 'Текст 1';
+$_lang['seofilter_default_content_text2'] = 'Текст 2';
+
+$_lang['seofilter_default_content_create'] = 'Добавить Содержимое';
+$_lang['seofilter_default_content_update'] = 'Изменить запись';
+$_lang['seofilter_default_content_remove'] = 'Удалить запись';
+$_lang['seofilter_defaults_content_remove'] = 'Удалить записи';
+$_lang['seofilter_default_content_remove_confirm'] = 'Вы уверены, что хотите удалить эту запись?';
+$_lang['seofilter_defaults_content_remove_confirm'] = 'Вы уверены, что хотите удалить эти записи?';
+
+$_lang['seofilter_default_content_tab_general'] = 'Общие';
+$_lang['seofilter_default_content_tab_text1'] = 'Текст 1';
+$_lang['seofilter_default_content_tab_text2'] = 'Текст 2';

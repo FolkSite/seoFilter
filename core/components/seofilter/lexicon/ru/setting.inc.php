@@ -28,7 +28,7 @@ $_lang['setting_seofilter_hide_content_on_seo_filter'] = '';
 $_lang['setting_seofilter_hide_content_on_seo_filter_desc'] = 'Скрывать content на страницах сео фильтра';
 
 $_lang['setting_seofilter_hide_introtext_on_seo_filter_pls'] = '';
-$_lang['setting_seofilter_hide_introtext_on_seo_filter_pls_desc'] = 'Скрывать introtext на страницах сео фильтра, даже если есть плейсхолдеры [[+seo_filter_XXX]]';
+$_lang['setting_seofilter_hide_introtext_on_seo_filter_pls_desc'] = 'Скрывать introtext на страницах сео фильтра, даже если в нем есть плейсхолдеры [[+seo_filter_XXX]]';
 
 $_lang['setting_seofilter_hide_content_on_seo_filter_pls'] = '';
-$_lang['setting_seofilter_hide_content_on_seo_filter_pls_desc'] = 'Скрывать content на страницах сео фильтра, даже если есть плейсхолдеры [[+seo_filter_XXX]]';
+$_lang['setting_seofilter_hide_content_on_seo_filter_pls_desc'] = 'Скрывать content на страницах сео фильтра, даже если в нем есть плейсхолдеры [[+seo_filter_XXX]]';
